@@ -27,6 +27,8 @@
     font-size: 3rem;
     color:red ;
     cursor: pointer;
+    font-family: "Arial Rounded MT Bold", sans-serif;
+    
 }
 
 .containerCenter{
@@ -36,7 +38,7 @@
     justify-content: center;
     width: 50%;
     height: 90%;
-    border: 1px solid black;
+    margin:0 auto;
 }
 
 .containerProfile{
@@ -45,11 +47,9 @@
     align-items: start ;
     justify-content: center;
     width: 65%;
-    max-width: 100%;
+    max-width: 80%;
     height: auto;
-    margin: auto;
     width: 1200px;
-    border: 1px solid black;
 }
 
 .nickProfile{
@@ -81,22 +81,36 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 1200px;
+    width: 100%;
+    max-width: 50%;
     height: auto;
-    max-width: 100%;
-    margin: auto;
-    border: 1px solid black;
+    margin-top: 2rem;
 }
 
 .containerQRcode h4{
-    font-size: clamp(1.0rem, 3vw, 1rem);
+    font-size: clamp(1rem, 2vw, 1rem);
     font-style: italic; 
     margin-bottom: 2rem;   
 }
 
 .containerQRcode img{
-    width: 40%;
+    width: 100%;
     height: auto;
+}
+
+@media (max-width: 768px) {
+    .containerCenter{
+        width: 60%;
+        height: 100%;
+    }
+    .containerProfile{
+        width: 100%;
+        max-width: 100%;
+    }
+    .containerQRcode{
+        width: 100%;
+        max-width: 100%;
+    }
 }
 
 
