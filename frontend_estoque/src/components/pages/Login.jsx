@@ -1,4 +1,4 @@
-import styles from './Login.module.css';
+import styles from '../modules/Login.module.css';
 
 export default function Login(){
 
