@@ -1,116 +1,137 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    background-color: #f0f2f5;
+
 }
-.container{
+
+.container {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100vw;
     height: 100vh;
-
-}
-
-.containerTopo{
-    display: flex;
-    justify-content: end;
-    width: 100%;
-    height: 5%;
-    
-}
-
-.buttonExit{
-    margin-right: 1rem;
-    border: none;
-    background-color: transparent;
-    font-size: 3rem;
-    color:red ;
-    cursor: pointer;
-    font-family: "Arial Rounded MT Bold", sans-serif;
-    
-}
-
-.containerCenter{
-    display: flex;
-    flex-direction: column;
-    align-items: center ;
-    justify-content: center;
-    width: 50%;
-    height: 90%;
-    margin:0 auto;
-}
-
-.containerProfile{
-    display: flex;
-    flex-direction: column;
-    align-items: start ;
-    justify-content: center;
-    width: 65%;
-    max-width: 80%;
-    height: auto;
-    width: 1200px;
-}
-
-.nickProfile{
-    display: flex;
-    align-items: center;
-    font-style: italic;
-    text-align: center;
-    width: 100%;
-}
-.containerProfile img{
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
-    
-}
-
-.labelInformationsUser{
-    display: flex;
-    flex-direction: column;
-    font-size: clamp(2rem);
-    margin: 1rem;
-    font-style: italic;
-    text-align: start;
     font-family: 'Inter', sans-serif;
 }
 
-.containerQRcode{
+.containerCenter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 50%;
+    height: 90%;
+    margin: 4rem;
+    background-color: #ffffff; 
+    border-radius: 15px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    box-sizing: border-box; 
+    overflow: hidden; 
+}
+
+.containerExit{
+    width: 100%;
+    height: 5%;
+    display: flex;
+    justify-content: end;
+    margin-bottom: 8rem;
+    background-color: transparent;
+}
+
+.containerExit button {
+    background-color: f0f2f5;
+    width: 3rem;
+    height: auto;
+    border: none;
+    border-radius: 1rem;
+    font-size: xx-large;
+    cursor: pointer;
+}
+
+
+.containerProfile {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    justify-content: center;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+    background-color: transparent;
+}
+
+.nickProfile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-style: italic;
+    text-align: center;
+    background-color: transparent;
+
+}
+
+.nickProfile h3,label{
+    background-color: transparent;
+
+}
+
+.containerProfile img {
+    width: 100px; 
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+
+}
+
+.labelInformationsUser {
+    display: flex;
+    flex-direction: column;
+    align-items: self-start;
+    font-size: 1rem;
+    margin: 1rem 0;
+    font-style: italic;
+    text-align: center;
+    color: #555;
+    background-color: transparent;
+
+}
+
+.containerQRcode {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
-    max-width: 50%;
-    height: auto;
+    max-width: 300px;
     margin-top: 2rem;
+    background-color: transparent;
+
 }
 
-.containerQRcode h4{
-    font-size: clamp(1rem, 2vw, 1rem);
-    font-style: italic; 
-    margin-bottom: 2rem;   
+.containerQRcode h4 {
+    font-size: 1rem;
+    font-style: italic;
+    margin-bottom: 1rem;
+    background-color: transparent;
 }
 
-.containerQRcode img{
+.containerQRcode img {
     width: 100%;
     height: auto;
 }
 
+
 @media (max-width: 768px) {
-    .containerCenter{
-        width: 60%;
-        height: 100%;
-    }
-    .containerProfile{
-        width: 100%;
+    .containerCenter {
+        width: 50%;
+        height: auto;
         max-width: 100%;
     }
-    .containerQRcode{
+    .containerProfile, .containerQRcode {
         width: 100%;
         max-width: 100%;
     }
 }
-
-

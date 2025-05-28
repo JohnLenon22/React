@@ -2,17 +2,18 @@ import styles from "./HomeMenu.module.css"
 import { useNavigate } from 'react-router-dom';
 import qrcode from '../img/QRCODE.png'
 import perfil from '../img/jesuinoprofile.png'
+import voltar from '../img/voltar.png'
 
 export default function HomeMenu(){
     const navigate = useNavigate()
 
     return (
         <div className={styles.container}>
-            <div className={styles.containerTopo}>
-                <button className={styles.buttonExit} onClick={() => navigate('/')}>X</button>
-            </div>
 
             <div className={styles.containerCenter}>
+                <div className={styles.containerExit}>
+                    <button onClick={() => navigate('/')}>x</button>
+                </div>
                 <div className={styles.containerProfile}>
                     <div className={styles.nickProfile}>
                         <img src={perfil}/>
@@ -27,12 +28,7 @@ export default function HomeMenu(){
                     <h4>Escaneie o QR Code abaixo</h4>
                     <img src={qrcode}/>
                 </div>
-            </div>
-
-            <div className={styles.containerFooter}>
-                <h4>© Copyright</h4>
-            </div>
-            
+            </div>     
         </div>
     )
 }
