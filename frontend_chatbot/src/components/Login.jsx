@@ -9,7 +9,6 @@ export default function Login() {
   return (
     <div className={styles.container}>
       <div className={styles.container2}>
-        <h1 className={styles.title}>ChatBot</h1>
           <div className={styles.containerForm}>
             <h2 className={styles.textLogin}>LOGIN</h2>
             <form>
