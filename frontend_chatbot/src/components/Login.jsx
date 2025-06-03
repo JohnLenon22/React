@@ -1,6 +1,5 @@
-import styles from "./Login.module.css"
+import styles from "../modules/Login.module.css";
 import { useNavigate } from 'react-router-dom';
-
 
 export default function Login() {
 

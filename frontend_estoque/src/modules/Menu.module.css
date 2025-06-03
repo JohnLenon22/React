@@ -1,0 +1,66 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%; /* Herda a altura do pai */
+}
+
+.sidebar {
+  background-color: #f0f0f0;
+  width: 250px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%; /* Ocupa 100% da altura do pai */
+  /* overflow-y: auto; - Removido */
+}
+
+.titleNav {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.titleNav img {
+  width: 80px;
+  margin-bottom: 10px;
+}
+
+.titleNav h2 {
+  font-size: 1.2em;
+  color: #333;
+  text-align: center;
+}
+
+.contentNav {
+  width: 100%;
+}
+
+.contentNav button {
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  margin-bottom: 8px;
+  border: none;
+  background-color: transparent;
+  text-align: left;
+  cursor: pointer;
+  font-size: 1em;
+  color: #555;
+  transition: background-color 0.3s ease;
+}
+
+.contentNav button:hover {
+  background-color: #e0e0e0;
+}
+
+.contentNav .active {
+  background-color: #007bff;
+  color: white;
+}
+
+.contentNav .active:hover {
+  background-color: #0056b3;
+}

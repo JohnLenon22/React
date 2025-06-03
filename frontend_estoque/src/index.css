@@ -1,0 +1,5 @@
+html, body, #root {
+  overflow: hidden; /* Oculta qualquer overflow no nível da tela */
+  margin: 0;
+  font-family: 'Lato', sans-serif;
+}

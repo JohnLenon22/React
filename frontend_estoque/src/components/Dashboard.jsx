@@ -1,0 +1,313 @@
+import React from 'react';
+import styles from '../modules/Dashboard.module.css';
+
+export default function Dashboard() {
+  return (
+    <main className={styles.main}>
+      <div className={styles.leftSection}>
+        <div className={styles.topCards}>
+          <div className={styles.card}>
+            <label>Total de produtos</label>
+            <h2>3.989</h2>
+          </div>
+          <div className={styles.card}>
+            <label>Valor Estocado</label>
+            <h2>R$ 348.920</h2>
+          </div>
+        </div>
+
+        <div className={styles.tableBox}>
+          <h3>Alertas de Estoque</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th>Quantidade</th>
+                <th>SKU</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Arroz</td>
+                <td>20</td>
+                <td>4f21sa32</td>
+              </tr>
+              <tr>
+                <td>Macarrão</td>
+                <td>Esgotado</td>
+                <td>2315f1sx</td>
+              </tr>
+              <tr>
+                <td>Café</td>
+                <td>12</td>
+                <td>asf24g35</td>
+              </tr>
+              <tr>
+                <td>Óleo</td>
+                <td>2</td>
+                <td>24hnjkf22</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div className={styles.rightSection}>
+        <div className={styles.topRight}>
+          <div className={styles.outStockCard}>
+            <label>Fora de estoque</label>
+            <h2>25</h2>
+          </div>
+          <div className={styles.searchBox}>
+            <input type="text" placeholder="Buscar" />
+          </div>
+        </div>
+
+        <div className={styles.tableBox}>
+          <h3>Lista de produtos</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Nome</th>
+                <th>Categoria</th>
+                <th>Estoque</th>
+                <th>Preço</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Pipoca</td>
+                <td>Alimentação</td>
+                <td>20</td>
+                <td>R$ 8,00</td>
+              </tr>
+              <tr>
+                <td>Pasta dental</td>
+                <td>Higiene</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              <tr>
+                <td>Arroz</td>
+                <td>Alimentação</td>
+                <td>2</td>
+                <td>R$20,00</td>
+              </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  );
+}

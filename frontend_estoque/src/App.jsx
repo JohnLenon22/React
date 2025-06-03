@@ -1,14 +1,20 @@
+// App.jsx
 import { Routes, Route } from 'react-router-dom';
-import Login from './components/pages/Login';
-import Menu from './components/pages/Menu';
-import Produtos from './components/pages/Produtos';
+import Menu from './components/Menu';
+import Dashboard from './components/Dashboard';
+import Produtos from './components/Produtos';
 
-export default function App() {
+function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Login/>}/>
-      <Route path="/Menu" element={<Menu/>}/>
-      <Route path='/Produtos' element={<Produtos/>}/>
-    </Routes>
-  )
+    <div style={{ display: 'flex', height: '100vh' }}>
+      <Menu />
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/Menu" element={<Dashboard />} />
+          <Route path="/Produtos" element={<Produtos />} />
+        </Routes>
+    </div>
+  );
 }
+
+export default App;

@@ -50,13 +50,6 @@
     background-color: transparent;
 }
 
-.containerExit button img {
-    width: 100%;
-    height: auto;
-    border-radius: 1rem;
-    background-color: transparent;
-}
-   
 .containerProfile {
     display: flex;
     align-items: center;
