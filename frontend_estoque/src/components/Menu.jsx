@@ -1,5 +1,5 @@
 import styles from '../modules/Menu.module.css';
-import logo from '../assets/logo.png';
+import logo from '../assets/logo_sistema.png';
 import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Menu() {
@@ -7,7 +7,7 @@ export default function Menu() {
   const location = useLocation();
 
   const menuItems = [
-    { text: 'Dashboard', path: '/Menu' },
+    { text: 'Dashboard', path: '/Dashboard' },
     { text: 'Categorias', path: '/Categorias' },
     { text: 'Produtos', path: '/Produtos' },
     { text: 'Locais Armazenamento', path: '/Locais' },

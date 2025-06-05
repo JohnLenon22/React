@@ -1,17 +1,42 @@
 import styles from '../modules/Produtos.module.css';
-import logo from '../assets/logo.png'
-import { useNavigate } from "react-router-dom";
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { ProdutoContext } from '../contexts/ProdutoContext';
 
 export default function Produtos(){
-    const navigate = useNavigate();
+    
     const [isAddProdutoOpen, setIsAddProdutoOpen] = useState(false);
+    const {produtos, deletarProduto, filtro, setFiltro}  = useContext(ProdutoContext)
+    const [novoProduto, setNovoProduto] = useState({
+        nome: '',
+        idCategoria: '',
+        dataCadastro: new Date().toLocaleDateString('pt-BR'),
+        precoVenda: 0,
+        precoCompra: 0,
+        descricao: ''
+    })
+
+
+    const produtosFiltrados = produtos.filter(produto =>
+        produto.nome.toLowerCase().includes(filtro.toLowerCase()) ||
+        produto.idCategoria.toLowerCase().includes(filtro.toLowerCase()) ||
+        produto.dataCadastro.toLowerCase().includes(filtro.toLowerCase()) ||
+        produto.precoVenda.toLowerCase().includes(filtro.toLowerCase()) ||
+        produto.precoCompra.toLowerCase().includes(filtro.toLowerCase()) ||
+        produto.descricao.toLowerCase().includes(filtro.toLowerCase())
+    )
 
     const openAddProduto = ( ) => {
         setIsAddProdutoOpen(true)
     }
     const closeAddProduto = ( ) => {
         setIsAddProdutoOpen(false)
+    }
+
+    function handleExcluirProduto(id){
+        const confirmacao = window.confirm("Deseja excluir o produto?");
+        if (confirmacao) {
+            deletarProduto(id);
+        }
     }
 
     return (
@@ -24,12 +49,17 @@ export default function Produtos(){
             <div className={styles.tableBox}>
                 <div className={styles.group}>
                     <div className={styles.groupButtons}>
-                    <button className={styles.buttonAdd} onClick={openAddProduto}>Adicionar Produto</button>
-                    <button className={styles.buttonEdit}>Editar Produto</button>
-                    <button className={styles.buttonDel}>Excluir Produto</button>
+                        <button className={styles.buttonAdd} onClick={openAddProduto}>Adicionar Produto</button>
                     </div>
                     <div className={styles.searchBox}>
-                    <input type="text" placeholder="Buscar" />
+                        <form>
+                            <input 
+                                type="text" 
+                                placeholder="Buscar" 
+                                value={filtro}
+                                onChange={(e)=> setFiltro(e.target.value)}
+                            />
+                        </form>
                     </div>
                 </div>
 
@@ -37,35 +67,30 @@ export default function Produtos(){
                     <thead>
                         <tr>
                             <th>Nome</th>
-                            <th>SKU</th>
-                            <th>Quantidade</th>
-                            <th>Locais</th>
-                            <th>Valor</th>
+                            <th>Categoria</th>
+                            <th>Data Cadastro</th>
+                            <th>Preço Compra</th>
+                            <th>Preço Venda</th>
+                            <th>Descricao</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Arroz</td>
-                            <td>ARZ-001</td>
-                            <td>100</td>
-                            <td>Prateleira A</td>
-                            <td>R$ 25.00</td>
-                        </tr>
-                        <tr>
-                            <td>Feijão</td>
-                            <td>FEI-002</td>
-                            <td>50</td>
-                            <td>Prateleira B</td>
-                            <td>R$ 15.00</td>
-                        </tr>
-                        <tr>
-                            <td>Café</td>
-                            <td>CAF-003</td>
-                            <td>75</td>
-                            <td>Prateleira A</td>
-                            <td>R$ 10.00</td>
-                        </tr>
-                        {/* Adicione mais linhas de produtos aqui */}
+                        {produtosFiltrados.length > 0 ? (
+                            produtosFiltrados.map((produto) => (
+                            <tr key={produto}>
+                                <td>{produto.nome}</td>
+                                <td>{produto.idCategoria}</td>
+                                <td>{produto.dataCadastro}</td>
+                                <td>{produto.precoVenda.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                                <td>{produto.precoCompra.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                                <td>{produto.descricao}</td>
+                            </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td>Nenhum produto encontrado.</td>
+                            </tr>
+                        )}
                     </tbody>
                 </table>
             </div>
@@ -76,10 +101,9 @@ export default function Produtos(){
                         <form>
                             <label>Nome:</label>
                             <input type="text" required />
-                            <label>Preço Venda:</label>
-                            <input type="text" required />
-                            <label>Quantidade:</label>
                             <input type="number" required />
+                            <label>Categoria:</label>
+                            <input type="text" required />
                             <label>Locais:</label>
                             <input type="text" required />
                             <label>Preço Compra:</label>

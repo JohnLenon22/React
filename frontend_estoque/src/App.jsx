@@ -9,9 +9,8 @@ function App() {
     <div style={{ display: 'flex', height: '100vh' }}>
       <Menu />
         <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/Menu" element={<Dashboard />} />
-          <Route path="/Produtos" element={<Produtos />} />
+          <Route path="/Dashboard" element={<Dashboard/>} />
+          <Route path="/Produtos" element={<Produtos/>} />
         </Routes>
     </div>
   );

@@ -1,18 +1,30 @@
-import React from 'react';
+import { useContext } from 'react';
 import styles from '../modules/Dashboard.module.css';
+import { ProdutoContext } from '../contexts/ProdutoContext';
 
 export default function Dashboard() {
+
+  const { produtos, filtro, setFiltro } = useContext(ProdutoContext);
+  const produtosFiltrados = produtos.filter(produto =>
+      produto.nome.toLowerCase().includes(filtro.toLowerCase()) ||
+      produto.idCategoria.toLowerCase().includes(filtro.toLowerCase()) ||
+      produto.dataCadastro.toLowerCase().includes(filtro.toLowerCase()) ||
+      produto.precoVenda.toLowerCase().includes(filtro.toLowerCase()) ||
+      produto.precoCompra.toLowerCase().includes(filtro.toLowerCase()) ||
+      produto.descricao.toLowerCase().includes(filtro.toLowerCase())
+  )
+  
   return (
     <main className={styles.main}>
       <div className={styles.leftSection}>
         <div className={styles.topCards}>
           <div className={styles.card}>
             <label>Total de produtos</label>
-            <h2>3.989</h2>
+            <h2></h2>
           </div>
           <div className={styles.card}>
             <label>Valor Estocado</label>
-            <h2>R$ 348.920</h2>
+            <h2></h2>
           </div>
         </div>
 
@@ -22,31 +34,12 @@ export default function Dashboard() {
             <thead>
               <tr>
                 <th>Produto</th>
-                <th>Quantidade</th>
-                <th>SKU</th>
+                <th>Estoque</th>
+                <th>Local</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Arroz</td>
-                <td>20</td>
-                <td>4f21sa32</td>
-              </tr>
-              <tr>
-                <td>Macarrão</td>
-                <td>Esgotado</td>
-                <td>2315f1sx</td>
-              </tr>
-              <tr>
-                <td>Café</td>
-                <td>12</td>
-                <td>asf24g35</td>
-              </tr>
-              <tr>
-                <td>Óleo</td>
-                <td>2</td>
-                <td>24hnjkf22</td>
-              </tr>
+              
             </tbody>
           </table>
         </div>
@@ -56,10 +49,17 @@ export default function Dashboard() {
         <div className={styles.topRight}>
           <div className={styles.outStockCard}>
             <label>Fora de estoque</label>
-            <h2>25</h2>
+            <h2></h2>
           </div>
           <div className={styles.searchBox}>
-            <input type="text" placeholder="Buscar" />
+            <form>
+              <input 
+                  type="text" 
+                  placeholder="Buscar" 
+                  value={filtro}
+                  onChange={(e)=> setFiltro(e.target.value)}
+              />
+            </form>
           </div>
         </div>
 
@@ -70,240 +70,29 @@ export default function Dashboard() {
               <tr>
                 <th>Nome</th>
                 <th>Categoria</th>
-                <th>Estoque</th>
-                <th>Preço</th>
+                <th>Data Cadastro</th>
+                <th>Preço Compra</th>
+                <th>Preço Venda</th>
+                <th>Descricao</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Pipoca</td>
-                <td>Alimentação</td>
-                <td>20</td>
-                <td>R$ 8,00</td>
-              </tr>
-              <tr>
-                <td>Pasta dental</td>
-                <td>Higiene</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              <tr>
-                <td>Arroz</td>
-                <td>Alimentação</td>
-                <td>2</td>
-                <td>R$20,00</td>
-              </tr>
-              
+              {produtosFiltrados.length > 0 ? (
+                  produtosFiltrados.map((produto) => (
+                  <tr key={produto}>
+                      <td>{produto.nome}</td>
+                      <td>{produto.idCategoria}</td>
+                      <td>{produto.dataCadastro}</td>
+                      <td>{produto.precoVenda.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                      <td>{produto.precoCompra.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                      <td>{produto.descricao}</td>
+                  </tr>
+                  ))
+              ) : (
+                  <tr>
+                      <td>Nenhum produto encontrado.</td>
+                  </tr>
+              )}
             </tbody>
           </table>
         </div>
