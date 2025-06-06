@@ -36,11 +36,17 @@ export function ProdutoProvider({ children }) {
     };
 
     const adicionarProduto = async (novoProduto) => {
+        if (!novoProduto.nome || !novoProduto.idCategoria || isNaN(novoProduto.precoCompra) || isNaN(novoProduto.precoVenda)) {
+            alert('Erro: Dados do produto inválidos. Por favor, preencha todos os campos corretamente.');
+            return;
+        }
+
         try {
+            console.log("Enviando para o backend:", novoProduto);
             const response = await api.post(`/products/`, novoProduto);
-            if(response.status === 201){
+            if (response.status === 201) {
                 setProdutos(prevProdutos => [...prevProdutos, response.data]);
-                console.log(`Produto adicionado ocm sucesso: ${response.data}`);
+                console.log(`Produto adicionado com sucesso:`, response.data); 
             }
         } catch (error) {
             console.error("Erro ao adicionado produto:", error);
@@ -53,7 +59,7 @@ export function ProdutoProvider({ children }) {
         adicionarProduto, 
         setProdutos,
         filtro,
-        setFiltro,
+        setFiltro
     };
 
     return (

@@ -10,7 +10,9 @@ export default function Menu() {
     { text: 'Dashboard', path: '/Dashboard' },
     { text: 'Categorias', path: '/Categorias' },
     { text: 'Produtos', path: '/Produtos' },
-    { text: 'Locais Armazenamento', path: '/Locais' },
+    { text: 'Locais Armazenamento', path: '/LocaisArmazenamento' },
+    { text: 'Movimentações Estoques', path: '/MovimentacoesEstoque' },
+    { text: 'Movimentações Usuário', path: '/MovimentacoesUsuario' }
   ];
 
   return (

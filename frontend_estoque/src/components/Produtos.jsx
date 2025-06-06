@@ -1,43 +1,73 @@
 import styles from '../modules/Produtos.module.css';
 import { useContext, useState } from 'react';
 import { ProdutoContext } from '../contexts/ProdutoContext';
-
 export default function Produtos(){
     
     const [isAddProdutoOpen, setIsAddProdutoOpen] = useState(false);
-    const {produtos, deletarProduto, filtro, setFiltro}  = useContext(ProdutoContext)
+    const {produtos, deletarProduto, adicionarProduto, filtro, setFiltro}  = useContext(ProdutoContext)
     const [novoProduto, setNovoProduto] = useState({
         nome: '',
         idCategoria: '',
-        dataCadastro: new Date().toLocaleDateString('pt-BR'),
-        precoVenda: 0,
-        precoCompra: 0,
+        precoVenda: '',
+        precoCompra: '',
         descricao: ''
     })
 
+    const produtosFiltrados = produtos.filter(produto => {
+        const filtroLower = filtro.toLowerCase();
 
-    const produtosFiltrados = produtos.filter(produto =>
-        produto.nome.toLowerCase().includes(filtro.toLowerCase()) ||
-        produto.idCategoria.toLowerCase().includes(filtro.toLowerCase()) ||
-        produto.dataCadastro.toLowerCase().includes(filtro.toLowerCase()) ||
-        produto.precoVenda.toLowerCase().includes(filtro.toLowerCase()) ||
-        produto.precoCompra.toLowerCase().includes(filtro.toLowerCase()) ||
-        produto.descricao.toLowerCase().includes(filtro.toLowerCase())
-    )
+        // Garante que todas as propriedades sejam strings e não null/undefined antes de chamar toLowerCase()
+        const nome = String(produto.nome || '');
+        const idCategoria = String(produto.idCategoria || '');
+        const dataCadastro = String(produto.dataCadastro || '');
+        const precoVenda = String(produto.precoVenda || '');
+        const precoCompra = String(produto.precoCompra || '');
+        const descricao = String(produto.descricao || '');
+
+        return (
+            nome.toLowerCase().includes(filtroLower) ||
+            idCategoria.toLowerCase().includes(filtroLower) ||
+            dataCadastro.toLowerCase().includes(filtroLower) ||
+            precoVenda.toLowerCase().includes(filtroLower) ||
+            precoCompra.toLowerCase().includes(filtroLower) ||
+            descricao.toLowerCase().includes(filtroLower)
+        );
+    });
 
     const openAddProduto = ( ) => {
+        setNovoProduto({
+            nome: '',
+            idCategoria: '',
+            precoCompra: '',
+            precoVenda: '',
+            descricao: ''
+        });
         setIsAddProdutoOpen(true)
     }
+
     const closeAddProduto = ( ) => {
         setIsAddProdutoOpen(false)
     }
 
-    function handleExcluirProduto(id){
-        const confirmacao = window.confirm("Deseja excluir o produto?");
-        if (confirmacao) {
-            deletarProduto(id);
+    function handleSalvarProduto() {
+        if (!novoProduto.nome || !novoProduto.idCategoria || !novoProduto.precoCompra  || !novoProduto.precoVenda === '' ) {
+            alert('Por favor, preencha todos os campos!');
+            return;
         }
-    }
+
+        const dadosProduto = {
+            ...novoProduto,
+            idCategoria: parseInt(novoProduto.idCategoria),
+            precoCompra: parseFloat(novoProduto.precoCompra), 
+            precoVenda: parseFloat(novoProduto.precoVenda),   
+            dataCadastro: new Date().toISOString(),
+        };
+        console.log("Dados do produto sendo enviados:", dadosProduto);
+        adicionarProduto(dadosProduto); 
+        closeAddProduto(); 
+    };
+
+    
 
     return (
         
@@ -52,7 +82,7 @@ export default function Produtos(){
                         <button className={styles.buttonAdd} onClick={openAddProduto}>Adicionar Produto</button>
                     </div>
                     <div className={styles.searchBox}>
-                        <form>
+                        <form onSubmit={(e) => e.preventDefault()}>
                             <input 
                                 type="text" 
                                 placeholder="Buscar" 
@@ -77,12 +107,24 @@ export default function Produtos(){
                     <tbody>
                         {produtosFiltrados.length > 0 ? (
                             produtosFiltrados.map((produto) => (
-                            <tr key={produto}>
+                            <tr key={produto.id}>
                                 <td>{produto.nome}</td>
                                 <td>{produto.idCategoria}</td>
-                                <td>{produto.dataCadastro}</td>
-                                <td>{produto.precoVenda.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
-                                <td>{produto.precoCompra.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                                <td>{
+                                    produto.dataCadastro ? 
+                                    new Date(produto.dataCadastro).toLocaleString('pt-BR', {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                        hour: '2-digit',
+                                        minute: '2-digit',
+                                        hour12: true // Formato 24h
+                                    })
+                                    : 'N/A'
+                                    }
+                                </td>
+                                <td>{parseFloat(produto.precoVenda || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                                <td>{parseFloat(produto.precoCompra || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
                                 <td>{produto.descricao}</td>
                             </tr>
                             ))
@@ -98,20 +140,19 @@ export default function Produtos(){
                 <div className={styles.addProdutoModal}>
                     <div className={styles.modalContent}>
                         <h2>Adicionar Produto</h2>
-                        <form>
+                        <form onSubmit={(e) => e.preventDefault()}>
                             <label>Nome:</label>
-                            <input type="text" required />
-                            <input type="number" required />
+                            <input type="text" id="nome" value={novoProduto.nome} onChange={(e) => setNovoProduto({...novoProduto, nome: e.target.value})} required />
                             <label>Categoria:</label>
-                            <input type="text" required />
-                            <label>Locais:</label>
-                            <input type="text" required />
+                            <input type="number" id="idCategoria" value={novoProduto.idCategoria} onChange={(e) => setNovoProduto({...novoProduto, idCategoria: e.target.value})} required />
                             <label>Preço Compra:</label>
-                            <input type="number" step="0.01" id="valor" name="valor" placeholder="R$ " required />
+                            <input type="number" step="0.01" value={novoProduto.precoCompra} onChange={(e) => setNovoProduto({...novoProduto, precoCompra: e.target.value})} placeholder="R$ " required />
                             <label>Preço Venda:</label>
-                            <input type="number" step="0.01" id="valor" name="valor" placeholder="R$ " required />
+                            <input type="number" step="0.01" value={novoProduto.precoVenda} onChange={(e) => setNovoProduto({...novoProduto, precoVenda: e.target.value})} placeholder="R$ " required />
+                            <label>Descrição:</label>
+                            <input type="text" value={novoProduto.descricao} onChange={(e) => setNovoProduto({...novoProduto, descricao: e.target.value})} required />
                         </form>
-                        <button type="submit">Salvar</button>
+                        <button type="button" onClick={handleSalvarProduto}>Salvar</button>
                         <button onClick={closeAddProduto}>Fechar</button>
                     </div>
                 </div>
