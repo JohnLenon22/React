@@ -147,9 +147,17 @@
   text-align: left;
 }
 
-.tableBox th {
+.thID {
   background-color: #f2f2f2;
   font-weight: bold;
+  width: 20%;
+  
+}
+.thNOME {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  width: 80%;
+  
 }
 
 .tableBox tr:nth-child(even) {

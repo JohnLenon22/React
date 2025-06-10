@@ -35,6 +35,8 @@ export function ProdutoProvider({ children }) {
         }
     };
 
+   
+
     const adicionarProduto = async (novoProduto) => {
         if (!novoProduto.nome || !novoProduto.idCategoria || isNaN(novoProduto.precoCompra) || isNaN(novoProduto.precoVenda)) {
             alert('Erro: Dados do produto inválidos. Por favor, preencha todos os campos corretamente.');

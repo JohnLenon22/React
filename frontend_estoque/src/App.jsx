@@ -7,6 +7,7 @@ import Categorias from './components/Categorias';
 import LocaisArmazenamento from './components/LocaisArmazenamento';
 import MovimentacoesEstoque from './components/MovimentacoesEstoque';
 import { ProdutoProvider } from './contexts/ProdutoContext'; // Verifique o caminho correto!
+import { CategoriaProvider } from './contexts/CategoriaContext';
 
 
 
@@ -15,14 +16,16 @@ function App() {
     <div style={{ display: 'flex', height: '100vh' }}>
       <Menu />
         <ProdutoProvider>
+        <CategoriaProvider>
           <Routes>
-          <Route path="/Dashboard" element={<Dashboard/>} />
-          <Route path="/Produtos" element={<Produtos/>} />
-          <Route path="/Categorias" element={<Categorias/>} />
-          <Route path="/LocaisArmazenamento" element={<LocaisArmazenamento/>} />
-          <Route path="/MovimentacoesEstoque" element={<MovimentacoesEstoque/>} />
-          {/* <Route path="/Movimentações Usuario" element={<MovimentacoesUsuario/>} /> */}
-        </Routes>
+            <Route path="/Dashboard" element={<Dashboard/>} />
+            <Route path="/Produtos" element={<Produtos/>} />
+            <Route path="/Categorias" element={<Categorias/>} />
+            <Route path="/LocaisArmazenamento" element={<LocaisArmazenamento/>} />
+            <Route path="/MovimentacoesEstoque" element={<MovimentacoesEstoque/>} />
+            {/* <Route path="/Movimentações Usuario" element={<MovimentacoesUsuario/>} /> */}
+            </Routes>
+        </CategoriaProvider>
         </ProdutoProvider>
         
     </div>

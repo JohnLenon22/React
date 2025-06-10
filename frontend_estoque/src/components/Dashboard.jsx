@@ -5,6 +5,7 @@ import { ProdutoContext } from '../contexts/ProdutoContext';
 export default function Dashboard() {
 
   const { produtos, filtro, setFiltro } = useContext(ProdutoContext);
+
   const produtosFiltrados = produtos.filter(produto =>
       produto.nome.toLowerCase().includes(filtro.toLowerCase()) ||
       produto.idCategoria.toLowerCase().includes(filtro.toLowerCase()) ||
@@ -13,18 +14,25 @@ export default function Dashboard() {
       produto.precoCompra.toLowerCase().includes(filtro.toLowerCase()) ||
       produto.descricao.toLowerCase().includes(filtro.toLowerCase())
   )
+
+  const valorEstocado = produtos ? produtos.reduce((acc, produto) => {
+        const preco = parseFloat(produto.precoCompra); 
+        return acc + (isNaN(preco) ? 0 : preco);
+    }, 0) : 0;
   
+  const totalProdutos = produtos ? produtos.length : null
+
   return (
     <main className={styles.main}>
       <div className={styles.leftSection}>
         <div className={styles.topCards}>
           <div className={styles.card}>
             <label>Total de produtos</label>
-            <h2></h2>
+            <h2>{totalProdutos}</h2>
           </div>
           <div className={styles.card}>
             <label>Valor Estocado</label>
-            <h2></h2>
+            <h2>{valorEstocado}</h2>
           </div>
         </div>
 

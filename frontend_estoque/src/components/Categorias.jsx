@@ -12,10 +12,18 @@ export default function Categorias(){
     })
 
 
-    const categoriasFiltradas = categorias.filter(categoria =>
-        categoria.nome.toLowerCase().includes(filtro.toLowerCase()) ||
-        categoria.id.toLowerCase().includes(filtro.toLowerCase()) 
-    )
+    
+    const categoriasFiltradas = categorias.filter(categoria => {
+        const filtroLower = filtro.toLowerCase();
+
+        const id = String(categoria.idCategoria || '');
+        const nome = String(categoria.nome || '');
+
+        return (
+            id.toLowerCase().includes(filtroLower) ||
+            nome.toLowerCase().includes(filtroLower)
+        );
+    });
 
     const openAddCategoria = ( ) => {
         setIsAddCategoriaOpen(true)
@@ -44,7 +52,7 @@ export default function Categorias(){
                         <button className={styles.buttonAdd} onClick={openAddCategoria}>Adicionar Categoria</button>
                     </div>
                     <div className={styles.searchBox}>
-                        <form>
+                        <form onSubmit={(e) => e.preventDefault()}>
                             <input 
                                 type="text" 
                                 placeholder="Buscar" 
@@ -58,8 +66,8 @@ export default function Categorias(){
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
+                            <th className={styles.thID}>ID</th>
+                            <th className={styles.thNOME}>Nome</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -82,7 +90,7 @@ export default function Categorias(){
                 <div className={styles.addCategoriaModal}>
                     <div className={styles.modalContent}>
                         <h2>Adicionar Categoria</h2>
-                        <form>
+                        <form onSubmit={(e) => e.preventDefault()}>
                             <label>Nome:</label>
                             <input type="text" id="nome" value={novaCategoria.nome} onChange={(e) => setNovaCategoria({...novaCategoria, nome: e.target.value})} required />
                         </form>
