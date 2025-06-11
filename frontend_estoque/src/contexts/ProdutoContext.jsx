@@ -47,7 +47,7 @@ export function ProdutoProvider({ children }) {
             console.log("Enviando para o backend:", novoProduto);
             const response = await api.post(`/products/`, novoProduto);
             if (response.status === 201) {
-                setProdutos(prevProdutos => [...prevProdutos, response.data]);
+                setProdutos(prevProdutos => [...prevProdutos, novoProduto]);
                 console.log(`Produto adicionado com sucesso:`, response.data); 
             }
         } catch (error) {

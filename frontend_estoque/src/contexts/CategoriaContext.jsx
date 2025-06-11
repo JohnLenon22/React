@@ -39,7 +39,7 @@ export function CategoriaProvider({ children }) {
         try {
             const response = await api.post(`/categories/`, novaCategoria);
             if(response.status === 201){
-                setCategorias(prevCategorias => [...prevCategorias, response.data]);
+                setCategorias(prevCategorias => [...prevCategorias, novaCategoria]);
                 console.log(`Categoria adicionado com sucesso: ${response.data}`);
             }
         } catch (error) {

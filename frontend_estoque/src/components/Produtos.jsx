@@ -1,6 +1,11 @@
 import styles from '../modules/Produtos.module.css';
+import { AiFillDelete } from "react-icons/ai";
+import { AiFillEdit } from "react-icons/ai";
+
 import { useContext, useState } from 'react';
 import { ProdutoContext } from '../contexts/ProdutoContext';
+import { CategoriaContext } from '../contexts/CategoriaContext';
+
 export default function Produtos(){
     
     const [isAddProdutoOpen, setIsAddProdutoOpen] = useState(false);
@@ -12,6 +17,12 @@ export default function Produtos(){
         precoCompra: '',
         descricao: ''
     })
+    const {categorias} = useContext(CategoriaContext)
+
+    const getNomeCategoria = (idCategoria) => {
+        const categoriaEncontrada = categorias.find(cat => String(cat.id || cat.idCategoria) === String(idCategoria));
+        return categoriaEncontrada ? `${categoriaEncontrada.nome}`:` Nome não encontrado`;
+    };
 
     const produtosFiltrados = produtos.filter(produto => {
         const filtroLower = filtro.toLowerCase();
@@ -67,6 +78,12 @@ export default function Produtos(){
         closeAddProduto(); 
     };
 
+    function handleDeletarProduto(produto){
+        if (window.confirm(`Tem certeza que deseja deletar ${produto.nome}?`)) {
+            deletarProduto(produto.id); 
+        }
+    }
+
     
 
     return (
@@ -109,7 +126,7 @@ export default function Produtos(){
                             produtosFiltrados.map((produto) => (
                             <tr key={produto.id}>
                                 <td>{produto.nome}</td>
-                                <td>{produto.idCategoria}</td>
+                                <td>{getNomeCategoria(produto.idCategoria)}</td>
                                 <td>{
                                     produto.dataCadastro ? 
                                     new Date(produto.dataCadastro).toLocaleString('pt-BR', {
@@ -126,9 +143,13 @@ export default function Produtos(){
                                 <td>{parseFloat(produto.precoVenda || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
                                 <td>{parseFloat(produto.precoCompra || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
                                 <td>{produto.descricao}</td>
+                                <button><AiFillEdit/></button>
+                                <button onClick={() => handleDeletarProduto(produto)}><AiFillDelete/></button>
                             </tr>
+                            
                             ))
-                        ) : (
+                        )
+                        : (
                             <tr>
                                 <td>Nenhum produto encontrado.</td>
                             </tr>

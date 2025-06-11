@@ -1,4 +1,6 @@
 import styles from '../modules/Categorias.module.css'
+import { AiFillDelete } from "react-icons/ai";
+import { AiFillEdit } from "react-icons/ai";
 import { useContext, useState } from 'react'
 import { CategoriaContext } from '../contexts/CategoriaContext'
 
@@ -12,7 +14,6 @@ export default function Categorias(){
     })
 
 
-    
     const categoriasFiltradas = categorias.filter(categoria => {
         const filtroLower = filtro.toLowerCase();
 
@@ -32,13 +33,23 @@ export default function Categorias(){
         setIsAddCategoriaOpen(false)
     }
 
-    const handleSalvarCategoria = ( ) => {
-        if(!novaCategoria.nome){
+    function handleSalvarCategoria(){
+        if(!novaCategoria.nome || novaCategoria.nome.trim() === '') {
             alert('Preencha o campo nome')
+            return;
         }
         adicionarCategoria(novaCategoria)
         setNovaCategoria({nome: ''})
+        closeAddCategoria()
     }
+
+    function handleDeletarCategoria(categoria){
+        if (window.confirm(`Tem certeza que deseja deletar ${categoria.nome}?`)) {
+            deletarCategoria(categoria.id); 
+        }
+    }
+
+
 
     return(
         <main className={styles.main}>
@@ -76,6 +87,8 @@ export default function Categorias(){
                             <tr key={categoria.id}>
                                 <td>{categoria.id}</td>
                                 <td>{categoria.nome}</td>
+                                <button><AiFillEdit/></button>
+                                <button onClick={() => handleDeletarCategoria(categoria)}><AiFillDelete/></button>
                             </tr>
                             ))
                         ) : (
@@ -98,7 +111,8 @@ export default function Categorias(){
                         <button onClick={closeAddCategoria}>Fechar</button>
                     </div>
                 </div>
-            )}
+            )};
+
         </main>
     )
 }

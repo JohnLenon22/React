@@ -1,10 +1,12 @@
 import { useContext } from 'react';
 import styles from '../modules/Dashboard.module.css';
 import { ProdutoContext } from '../contexts/ProdutoContext';
+import { CategoriaContext } from '../contexts/CategoriaContext';
 
 export default function Dashboard() {
 
   const { produtos, filtro, setFiltro } = useContext(ProdutoContext);
+  const { categorias } = useContext(CategoriaContext)
 
   const produtosFiltrados = produtos.filter(produto =>
       produto.nome.toLowerCase().includes(filtro.toLowerCase()) ||
@@ -21,6 +23,11 @@ export default function Dashboard() {
     }, 0) : 0;
   
   const totalProdutos = produtos ? produtos.length : null
+
+  const getNomeCategoria = (idCategoria) => {
+        const categoriaEncontrada = categorias.find(cat => String(cat.id || cat.idCategoria) === String(idCategoria));
+        return categoriaEncontrada ? `${categoriaEncontrada.nome}`:` Nome não encontrado`;
+  };
 
   return (
     <main className={styles.main}>
@@ -57,7 +64,7 @@ export default function Dashboard() {
         <div className={styles.topRight}>
           <div className={styles.outStockCard}>
             <label>Fora de estoque</label>
-            <h2></h2>
+            <h2>20</h2>
           </div>
           <div className={styles.searchBox}>
             <form>
@@ -89,7 +96,7 @@ export default function Dashboard() {
                   produtosFiltrados.map((produto) => (
                   <tr key={produto}>
                       <td>{produto.nome}</td>
-                      <td>{produto.idCategoria}</td>
+                      <td>{getNomeCategoria(produto.idCategoria)}</td>
                       <td>{produto.dataCadastro}</td>
                       <td>{produto.precoVenda.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
                       <td>{produto.precoCompra.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
