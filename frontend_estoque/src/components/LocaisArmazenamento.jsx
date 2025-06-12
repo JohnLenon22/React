@@ -1,43 +1,63 @@
 import styles from '../modules/LocaisArmazenamento.module.css'
+import { useContext, useState } from 'react'
+import { LocalArmazenamentoContext } from '../contexts/LocalArmazenamentoContext'
 
 export default function LocaisArmazenamento(){
 
-    // const [isAddLocalOpen, setIsAddLocalOpen] = useState(false)
-    // const {locais, deletarLocal, filtro, setFiltro}  = useContext(LocalContext)
-    // const [novoLocal, setNovoLocal] = useState({
-    //     nome: '',
-    //     endereco: '',
-    //     responsavel:'',
+    const [isAddLocalArmazenamentoOpen, setIsAddLocalArmazenamentoOpen] = useState(false)
+    const {locaisArmazenamento, deletarLocalArmazenamento, adicionarLocalArmazenamento, filtro, setFiltro}  = useContext(LocalArmazenamentoContext)
+    const [novoLocalArmazenamento, setNovoLocalArmazenamento] = useState({
+        nome: '',
+        endereco: '',
+        responsavel:'',
 
-    // })
+    })
 
-    // const locaisFiltrados = locais.filter(local =>
-    //     local.id.toLowerCase().includes(filtro.toLowerCase()) ||
-    //     local.nome.toLowerCase().includes(filtro.toLowerCase()) ||
-    //     local.endereco.toLowerCase().includes(filtro.toLowerCase()) ||
-    //     local.responsavel.toLowerCase().includes(filtro.toLowerCase()) 
-    // )
 
-    // const openAddLocal = ( ) => {
-    //     setNovoLocal({
-    //         nome: '',
-    //         endereco: '',
-    //         responsavel: ''
-    //     });
-    //     setIsAddLocalOpen(true)
-    // }
-    // const closeAddLocal = ( ) => {
-    //     setIsAddLocalOpen(false)
-    // }
+    const locaisArmazenamentoFiltrados = locaisArmazenamento.filter(localArmazenamento => {
+        const filtroLower = filtro.toLowerCase();
 
-    // const handleSalvarLocal = ( ) => {
-    //     if (local.id === '' || local.endereco === '' || local.responsavel === '') {
-    //         alert('Preencha todos os campos!')
-    //         return
-    //     }
-    //     adicionarLocal(novoLocal); 
-    //     closeAddProduto(); 
-    // }
+        const id = String(localArmazenamento.id || '');
+        const nome = String(localArmazenamento.nome || '');
+        const endereco = String(localArmazenamento.endereco || '');
+        const responsavel = String(localArmazenamento.responsavel || '');
+
+        return (
+            id.toLowerCase().includes(filtroLower) ||
+            nome.toLowerCase().includes(filtroLower) ||
+            endereco.toLowerCase().includes(filtroLower) ||
+            responsavel.toLowerCase().includes(filtroLower) 
+        );
+    });
+
+    const openAddLocalArmazenamento = ( ) => {
+        setNovoLocalArmazenamento({
+            nome: '',
+            endereco: '',
+            responsavel: ''
+        });
+        setIsAddLocalArmazenamentoOpen(true)
+    }
+    const closeAddLocalArmazenamento = ( ) => {
+        setIsAddLocalArmazenamentoOpen(false)
+    }
+
+    function handleSalvarLocalArmazenamento( ){
+        if (novoLocalArmazenamento.id === '' || novoLocalArmazenamento.endereco === '' || novoLocalArmazenamento.responsavel === '') {
+            alert('Preencha todos os campos!')
+            return
+        }
+        adicionarLocalArmazenamento(novoLocalArmazenamento); 
+        setNovoLocalArmazenamento({nome: '',endereco: '',responsavel: ''})
+        closeAddLocalArmazenamento(); 
+    }
+
+    function handleDeletarLocalArmazenamento( ){
+        adicionarLocalArmazenamento(localArmazenamento); 
+        closeAddLocalArmazenamento(); 
+    }
+
+
 
     return(
         <main className={styles.main}>
@@ -48,15 +68,15 @@ export default function LocaisArmazenamento(){
             <div className={styles.tableBox}>
                 <div className={styles.group}>
                     <div className={styles.groupButtons}>
-                        {/* <button className={styles.buttonAdd} onClick={openAddLocal}>Adicionar Local Armazenamento</button> */}
+                        <button className={styles.buttonAdd} onClick={openAddLocalArmazenamento}>Adicionar Local Armazenamento</button>
                     </div>
                     <div className={styles.searchBox}>
-                        <form onSubmit={(e)=> e.preventDefault()}>
+                        <form onSubmit={(e) => e.preventDefault()}>
                             <input 
                                 type="text" 
                                 placeholder="Buscar" 
-                                // value={filtro}
-                                // onChange={(e)=> setFiltro(e.target.value)}
+                                value={filtro}
+                                onChange={(e)=> setFiltro(e.target.value)}
                             />
                         </form>
                     </div>
@@ -72,36 +92,40 @@ export default function LocaisArmazenamento(){
                         </tr>
                     </thead>
                     <tbody>
-                        {/* {locaisFiltrados.length > 0 ? (
-                            locaisFiltrados.map((local) => (
-                            <tr key={local.id}>
-                                <td>{local.id}</td>
-                                <td>{local.nome}</td>
-                                <td>{local.endereco}</td>
-                                <td>{local.responsavel}</td>
+                        {locaisArmazenamentoFiltrados.length > 0 ? (
+                            locaisArmazenamentoFiltrados.map((localArmazenamento) => (
+                            <tr key={localArmazenamento.nome}>
+                                <td>{localArmazenamento.id}</td>
+                                <td>{localArmazenamento.nome}</td>
+                                <td>{localArmazenamento.endereco}</td>
+                                <td>{localArmazenamento.responsavel}</td>
                             </tr>
                             ))
                         ) : (
                             <tr>
-                                <td>Nenhuma local encontrada.</td>
+                                <td>Nenhuma local armazenamento encontrada.</td>
                             </tr>
-                        )} */}
+                        )}
                     </tbody>
                 </table>
             </div>
-            {/* {isAddLocalOpen && (
+            {isAddLocalArmazenamentoOpen && (
                 <div className={styles.addLocalModal}>
                     <div className={styles.modalContent}>
-                        <h2>Adicionar Local</h2>
-                        <form>
+                        <h2>Adicionar Local Armazenamento</h2>
+                        <form onSubmit={(e) => e.preventDefault()}>
                             <label>Nome:</label>
-                            <input type="text" id="nome" required />
+                            <input type="text" id="nome" value={novoLocalArmazenamento.nome} onChange={(e) => setNovoLocalArmazenamento({...novoLocalArmazenamento, nome: e.target.value})} required />
+                            <label>Endereço:</label>
+                            <input type="text" id="endereco" value={novoLocalArmazenamento.endereco} onChange={(e) => setNovoLocalArmazenamento({...novoLocalArmazenamento, endereco: e.target.value})} required />
+                            <label>Responsável:</label>
+                            <input type="text" id="responsavel" value={novoLocalArmazenamento.responsavel} onChange={(e) => setNovoLocalArmazenamento({...novoLocalArmazenamento, responsavel: e.target.value})} required />
                         </form>
-                        <button type="submit" >Salvar</button>
-                        <button onClick={closeAddLocal}>Fechar</button>
+                        <button type="submit" onClick={handleSalvarLocalArmazenamento}>Salvar</button>
+                        <button onClick={closeAddLocalArmazenamento}>Fechar</button>
                     </div>
                 </div>
-            )} */}
+            )}
         </main>
     )
 }
