@@ -5,6 +5,7 @@ export const ProdutoContext = createContext({
     produtos: [],
     adicionarProduto: () => {},
     deletarProduto: () => {},
+    editarProduto: () => {},
     setProdutos: () => {},
     filtro: '',
     setFiltro: () => {},
@@ -44,10 +45,10 @@ export function ProdutoProvider({ children }) {
         }
 
         try {
-            console.log("Enviando para o backend:", novoProduto);
             const response = await api.post(`/products/`, novoProduto);
             if (response.status === 201) {
-                setProdutos(prevProdutos => [...prevProdutos, novoProduto]);
+                const res = await api.get('/products');
+                setProdutos(res.data);
                 console.log(`Produto adicionado com sucesso:`, response.data); 
             }
         } catch (error) {
@@ -55,10 +56,27 @@ export function ProdutoProvider({ children }) {
         }
     };
 
+    const editarProduto = async (id, produto) => {
+        console.log(id, produto);
+        try {
+            const response = await api.put(`/products/${id}`, produto);
+            if (response.status === 200) {
+                const res = await api.get('/products');
+                setProdutos(res.data);
+                console.log(`Produto editado com sucesso:`, response.data); 
+            }
+        } catch (error) {
+            console.error("Erro ao editar produto:", error);
+        }
+    };
+
+
+
     const contextValue = {
         produtos,
         deletarProduto,
-        adicionarProduto, 
+        adicionarProduto,
+        editarProduto, 
         setProdutos,
         filtro,
         setFiltro

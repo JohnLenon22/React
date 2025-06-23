@@ -2,9 +2,10 @@ import { createContext, useState, useEffect } from "react";
 import { api } from '../api/setupApi'
 
 export const LocalArmazenamentoContext = createContext({
-    locaisArmazenamento: [{nome: "asdaw", endereco: "wae", responsavel: "sadas"}, {nome: "3", endereco: "wae", responsavel: "sadas"}, {nome: "2", endereco: "wae", responsavel: "sadas"}],
+    locaisArmazenamento: [],
     adicionarLocalArmazenamento: () => {},
     deletarLocalArmazenamento: () => {},
+    editarLocalArmazenamento: () =>  {},
     setLocaisArmazenamento: () => {},
     filtro: '',
     setFiltro: () => {},
@@ -17,44 +18,58 @@ export function LocalArmazenamentoProvider({ children }) {
     useEffect(() => {
         async function fetchLocaisArmazenamento() {
             try {
-                // const response = await api.get('/storageLocations');
-                // setLocaisArmazenamento(response.data);
-                setLocaisArmazenamento()
-                console.log(locaisArmazenamento)
+                const response = await api.get('/storageLocations');
+                setLocaisArmazenamento(response.data);
+
             } catch (error) {
-                console.error("Erro ao buscar LocaisArmazenamento:", error);
+                console.error("Erro ao buscar Locais Armazenamento:", error);
             }
         }
         fetchLocaisArmazenamento();
     }, []);
 
-    // const deletarLocalArmazenamento = async (id) => {
-    //     try {
-    //         await api.delete(`/storageLocations/${id}`);
-    //         setLocaisArmazenamento(locaisArmazenamento.filter(localArmazenamento => localArmazenamento.id !== id));
-    //     } catch (error) {
-    //         console.error("Erro ao deletar LocalArmazenamento:", error);
-    //     }
-    // };
-
-    const adicionarLocalArmazenamento = async (novoLocalArmazenamento) => {
+    const deletarLocalArmazenamento = async (id) => {
         try {
-            // const response = await api.post(`/storageLocations/`, novoLocalArmazenamento);
-            setLocaisArmazenamento(prevLocalArmazenamento => [...prevLocalArmazenamento, novoLocalArmazenamento]);
-            console.log(locaisArmazenamento)
-            // if(response.status === 201){
-            //     setLocaisArmazenamento(prevLocaisArmazenamento => [...prevLocaisArmazenamento, novoLocaisArmazenamento]);
-            //     console.log(`Local Armazenamento adicionado com sucesso: ${response.data}`);
-            // }
+            await api.delete(`/storageLocations/${id}`);
+            setLocaisArmazenamento(locaisArmazenamento.filter(localArmazenamento => localArmazenamento.id !== id));
         } catch (error) {
-            console.error("Erro ao adicionar LocalArmazenamento:", error);
+            console.error("Erro ao deletar Local Armazenamento:", error);
         }
     };
 
+    const adicionarLocalArmazenamento = async (novoLocalArmazenamento) => {
+        try {
+            const response = await api.post(`/storageLocations/`, novoLocalArmazenamento);
+            if(response.status === 201){
+                const res = await api.get('/storageLocations');
+                setLocaisArmazenamento(res.data);
+                console.log(`Local Armazenamento adicionado com sucesso: ${response.data}`);
+            }
+        } catch (error) {
+            console.error("Erro ao adicionar Local Armazenamento:", error);
+        }
+    };
+
+    const editarLocalArmazenamento = async (id, localArmazenamento) => {
+        try {
+            const response = await api.put(`/storageLocations/${id}`, localArmazenamento);
+            if(response.status === 200){
+                const res = await api.get('/storageLocations');
+                setLocaisArmazenamento(res.data);
+                console.log(`Local Armazenamento editado com sucesso: ${response.data}`);
+            }
+        } catch (error) {
+            console.error("Erro ao editar Local Armazenamento:", error);
+        }
+    };
+
+
+
     const contextValue = {
-        LocaisArmazenamento,
+        locaisArmazenamento,
         adicionarLocalArmazenamento,
         deletarLocalArmazenamento,
+        editarLocalArmazenamento,
         setLocaisArmazenamento,
         filtro,
         setFiltro,

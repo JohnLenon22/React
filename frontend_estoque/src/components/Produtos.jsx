@@ -9,8 +9,10 @@ import { CategoriaContext } from '../contexts/CategoriaContext';
 export default function Produtos(){
     
     const [isAddProdutoOpen, setIsAddProdutoOpen] = useState(false);
-    const {produtos, deletarProduto, adicionarProduto, filtro, setFiltro}  = useContext(ProdutoContext)
+    const [isEditProdutoOpen, setIsEditProdutoOpen] = useState(false);
+    const {produtos, deletarProduto, adicionarProduto, editarProduto, filtro, setFiltro}  = useContext(ProdutoContext)
     const [novoProduto, setNovoProduto] = useState({
+        id: '',
         nome: '',
         idCategoria: '',
         precoVenda: '',
@@ -27,7 +29,7 @@ export default function Produtos(){
     const produtosFiltrados = produtos.filter(produto => {
         const filtroLower = filtro.toLowerCase();
 
-        // Garante que todas as propriedades sejam strings e não null/undefined antes de chamar toLowerCase()
+        const id = String(produto.nome || '');
         const nome = String(produto.nome || '');
         const idCategoria = String(produto.idCategoria || '');
         const dataCadastro = String(produto.dataCadastro || '');
@@ -43,10 +45,12 @@ export default function Produtos(){
             precoCompra.toLowerCase().includes(filtroLower) ||
             descricao.toLowerCase().includes(filtroLower)
         );
-    });
+    }).sort((a, b) => a.nome.localeCompare(b.nome));
+
 
     const openAddProduto = ( ) => {
         setNovoProduto({
+            id: null,
             nome: '',
             idCategoria: '',
             precoCompra: '',
@@ -58,6 +62,23 @@ export default function Produtos(){
 
     const closeAddProduto = ( ) => {
         setIsAddProdutoOpen(false)
+    }
+
+    const openEditProduto = (produto) => {
+        setNovoProduto({
+            id: produto.id, 
+            nome: produto.nome,
+            idCategoria: produto.idCategoria,
+            dataCadastro: produto.dataCadastro,
+            precoCompra: produto.precoCompra,
+            precoVenda: produto.precoVenda,
+            descricao: produto.descricao
+        })
+        setIsEditProdutoOpen(true)
+    }
+
+    const closeEditProduto = () => {
+        setIsEditProdutoOpen(false)
     }
 
     function handleSalvarProduto() {
@@ -82,6 +103,27 @@ export default function Produtos(){
         if (window.confirm(`Tem certeza que deseja deletar ${produto.nome}?`)) {
             deletarProduto(produto.id); 
         }
+    }
+
+    function handleEditarProduto(){
+        const dadosProduto = {
+            ...novoProduto,
+            idCategoria: parseInt(novoProduto.idCategoria),
+            precoCompra: parseFloat(novoProduto.precoCompra), 
+            precoVenda: parseFloat(novoProduto.precoVenda),   
+            dataCadastro: new Date().toISOString(),
+        }; 
+        editarProduto(dadosProduto.id, {
+            nome: dadosProduto.nome,
+            idCategoria: dadosProduto.idCategoria,
+            dataCadastro: dadosProduto.dataCadastro,
+            precoCompra: dadosProduto.precoCompra,
+            precoVenda: dadosProduto.precoVenda,
+            descricao: dadosProduto.descricao
+        });
+       
+        closeEditProduto();
+        
     }
 
     
@@ -113,9 +155,10 @@ export default function Produtos(){
                 <table>
                     <thead>
                         <tr>
+                            <th>Data Cadastro</th>
                             <th>Nome</th>
                             <th>Categoria</th>
-                            <th>Data Cadastro</th>
+                            <th>Quantidade</th>
                             <th>Preço Compra</th>
                             <th>Preço Venda</th>
                             <th>Descricao</th>
@@ -124,27 +167,30 @@ export default function Produtos(){
                     <tbody>
                         {produtosFiltrados.length > 0 ? (
                             produtosFiltrados.map((produto) => (
-                            <tr key={produto.id}>
+
+                            <tr key={produto.id || produto.nome || produto.dataCadastro || produto.precoCompra || produto.precoVenda}>
+                                <td>{produto.dataCadastro ? 
+                                        new Date(produto.dataCadastro).toLocaleString('pt-BR', {
+                                            year: 'numeric',
+                                            month: '2-digit',
+                                            day: '2-digit',
+                                            hour: '2-digit',
+                                            minute: '2-digit',
+                                            hour12: true // Formato 24h
+                                        })
+                                        : 'N/A'
+                                        }
+                                </td>
                                 <td>{produto.nome}</td>
                                 <td>{getNomeCategoria(produto.idCategoria)}</td>
-                                <td>{
-                                    produto.dataCadastro ? 
-                                    new Date(produto.dataCadastro).toLocaleString('pt-BR', {
-                                        year: 'numeric',
-                                        month: '2-digit',
-                                        day: '2-digit',
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                        hour12: true // Formato 24h
-                                    })
-                                    : 'N/A'
-                                    }
-                                </td>
-                                <td>{parseFloat(produto.precoVenda || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
-                                <td>{parseFloat(produto.precoCompra || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                                <td>{produto.quantidade}</td>
+                                <td>{parseFloat(produto.precoCompra || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                                <td>{parseFloat(produto.precoVenda || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
                                 <td>{produto.descricao}</td>
-                                <button><AiFillEdit/></button>
-                                <button onClick={() => handleDeletarProduto(produto)}><AiFillDelete/></button>
+                                <td>
+                                    <button onClick={() => openEditProduto(produto)}><AiFillEdit/></button>
+                                    <button onClick={() => handleDeletarProduto(produto)}><AiFillDelete/></button>
+                                </td>
                             </tr>
                             
                             ))
@@ -165,16 +211,53 @@ export default function Produtos(){
                             <label>Nome:</label>
                             <input type="text" id="nome" value={novoProduto.nome} onChange={(e) => setNovoProduto({...novoProduto, nome: e.target.value})} required />
                             <label>Categoria:</label>
-                            <input type="number" id="idCategoria" value={novoProduto.idCategoria} onChange={(e) => setNovoProduto({...novoProduto, idCategoria: e.target.value})} required />
+                            <select id="idCategoria" value={novoProduto.idCategoria} onChange={(e) => setNovoProduto({...novoProduto, idCategoria: e.target.value})} required>
+                                <option>Selecione uma categoria</option>
+                                {categorias.map((cat) => (
+                                    <option key={cat.id} value={cat.id}>
+                                        {cat.nome}
+                                    </option>
+                                ))}
+                            </select>
+                            
                             <label>Preço Compra:</label>
                             <input type="number" step="0.01" value={novoProduto.precoCompra} onChange={(e) => setNovoProduto({...novoProduto, precoCompra: e.target.value})} placeholder="R$ " required />
                             <label>Preço Venda:</label>
                             <input type="number" step="0.01" value={novoProduto.precoVenda} onChange={(e) => setNovoProduto({...novoProduto, precoVenda: e.target.value})} placeholder="R$ " required />
                             <label>Descrição:</label>
-                            <input type="text" value={novoProduto.descricao} onChange={(e) => setNovoProduto({...novoProduto, descricao: e.target.value})} required />
+                            <input type="text" value={novoProduto.descricao} onChange={(e) => setNovoProduto({...novoProduto, descricao: e.target.value})}  />
                         </form>
-                        <button type="button" onClick={handleSalvarProduto}>Salvar</button>
-                        <button onClick={closeAddProduto}>Fechar</button>
+                        <button type="submit" className={styles.buttonAdd} onClick={handleSalvarProduto}>Salvar</button>
+                        <button onClick={closeAddProduto} >Fechar</button>
+                    </div>
+                </div>
+            )}
+            {isEditProdutoOpen && (
+                <div className={styles.addProdutoModal}>
+                    <div className={styles.modalContent}>
+                        <h2>Editar Produto</h2>
+                        <form onSubmit={(e) => e.preventDefault()}>
+                            <label>Nome:</label>
+                            <input type="text" id="nome" value={novoProduto.nome} onChange={(e) => setNovoProduto({...novoProduto, nome: e.target.value})} required />
+                            <label>Categoria:</label>
+                            <select id="idCategoria" value={novoProduto.idCategoria} onChange={(e) => setNovoProduto({...novoProduto, idCategoria: e.target.value})} required>
+                                <option>Selecione uma categoria</option>
+                                {categorias.map((cat) => (
+                                    <option key={cat.id} value={cat.id}>
+                                        {cat.nome}
+                                    </option>
+                                ))}
+                            </select>
+                            
+                            <label>Preço Compra:</label>
+                            <input type="number" step="0.01" value={novoProduto.precoCompra} onChange={(e) => setNovoProduto({...novoProduto, precoCompra: e.target.value})} placeholder="R$ " required />
+                            <label>Preço Venda:</label>
+                            <input type="number" step="0.01" value={novoProduto.precoVenda} onChange={(e) => setNovoProduto({...novoProduto, precoVenda: e.target.value})} placeholder="R$ " required />
+                            <label>Descrição:</label>
+                            <input type="text" value={novoProduto.descricao} onChange={(e) => setNovoProduto({...novoProduto, descricao: e.target.value})}  />
+                        </form>
+                        <button type="submit" className={styles.buttonAdd} onClick={handleEditarProduto}>Salvar</button>
+                        <button onClick={closeEditProduto}>Fechar</button>
                     </div>
                 </div>
             )}

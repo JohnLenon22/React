@@ -162,9 +162,8 @@
 
 
 
-/* adicionar produto */
 
-.addProdutoModal {
+.addLocalModal {
   position: fixed; /* Fica fixo na tela */
   top: 0;
   left: 0;
@@ -201,6 +200,7 @@
 }
 
 .modalContent input[type="text"],
+.modalContent select,
 .modalContent input[type="number"] {
   width: 100%;
   padding: 8px;
@@ -240,4 +240,3 @@
   background-color: #c82333;
 }
 
-/* adicionar produto */

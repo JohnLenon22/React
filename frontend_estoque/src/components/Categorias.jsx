@@ -8,8 +8,10 @@ import { CategoriaContext } from '../contexts/CategoriaContext'
 export default function Categorias(){
 
     const [isAddCategoriaOpen, setIsAddCategoriaOpen] = useState(false)
-    const {categorias, deletarCategoria,adicionarCategoria , filtro, setFiltro}  = useContext(CategoriaContext)
+    const [isEditCategoriaOpen, setIsEditCategoriaOpen] = useState(false)
+    const {categorias, deletarCategoria, adicionarCategoria, editarCategoria, filtro, setFiltro}  = useContext(CategoriaContext)
     const [novaCategoria, setNovaCategoria] = useState({
+        id: null,
         nome: '' 
     })
 
@@ -17,36 +19,60 @@ export default function Categorias(){
     const categoriasFiltradas = categorias.filter(categoria => {
         const filtroLower = filtro.toLowerCase();
 
-        const id = String(categoria.idCategoria || '');
+        const id = String(categoria.id || null);
         const nome = String(categoria.nome || '');
 
         return (
             id.toLowerCase().includes(filtroLower) ||
             nome.toLowerCase().includes(filtroLower)
         );
-    });
+    }).sort((a, b) => a.id - b.id);
 
     const openAddCategoria = ( ) => {
+        setNovaCategoria({
+            id: null,
+            nome: ''
+        })
         setIsAddCategoriaOpen(true)
     }
     const closeAddCategoria = ( ) => {
         setIsAddCategoriaOpen(false)
     }
 
-    function handleSalvarCategoria(){
+    const openEditCategoria = (categoria) => {
+        setNovaCategoria({ id: categoria.id, nome: categoria.nome });
+        setIsEditCategoriaOpen(true)
+    }
+    const closeEditCategoria = ( ) => {
+        setIsEditCategoriaOpen(false)
+
+    }
+
+    const handleSalvarCategoria = () => {
         if(!novaCategoria.nome || novaCategoria.nome.trim() === '') {
             alert('Preencha o campo nome')
             return;
         }
         adicionarCategoria(novaCategoria)
-        setNovaCategoria({nome: ''})
+        setNovaCategoria({id: null, nome: ''})
         closeAddCategoria()
     }
 
-    function handleDeletarCategoria(categoria){
+    const handleDeletarCategoria = (categoria) =>{
         if (window.confirm(`Tem certeza que deseja deletar ${categoria.nome}?`)) {
             deletarCategoria(categoria.id); 
         }
+    }
+
+    const handleEditarCategoria = () => {
+        if(!novaCategoria.nome || novaCategoria.nome.trim() === '') {
+            alert('Preencha o campo nome')
+            return;
+        }
+        editarCategoria(novaCategoria.id, {nome: novaCategoria.nome});
+        setNovaCategoria({id: null, nome: ''})
+        closeEditCategoria()
+
     }
 
 
@@ -87,10 +113,13 @@ export default function Categorias(){
                             <tr key={categoria.id}>
                                 <td>{categoria.id}</td>
                                 <td>{categoria.nome}</td>
-                                <button><AiFillEdit/></button>
-                                <button onClick={() => handleDeletarCategoria(categoria)}><AiFillDelete/></button>
+                                <td>
+                                    <button onClick={() => openEditCategoria(categoria)}><AiFillEdit/></button>
+                                    <button onClick={() => handleDeletarCategoria(categoria)}><AiFillDelete/></button>
+                                </td>
                             </tr>
-                            ))
+                            
+                        ))
                         ) : (
                             <tr>
                                 <td>Nenhuma categoria encontrada.</td>
@@ -107,11 +136,25 @@ export default function Categorias(){
                             <label>Nome:</label>
                             <input type="text" id="nome" value={novaCategoria.nome} onChange={(e) => setNovaCategoria({...novaCategoria, nome: e.target.value})} required />
                         </form>
-                        <button type="submit" onClick={handleSalvarCategoria} >Salvar</button>
-                        <button onClick={closeAddCategoria}>Fechar</button>
+                        <button type="submit" className={styles.buttonAdd} onClick={handleSalvarCategoria} >Salvar</button>
+                        <button className={styles.buttonDel} onClick={closeAddCategoria}>Fechar</button>
                     </div>
                 </div>
-            )};
+            )}
+            {isEditCategoriaOpen && (
+                <div className={styles.addCategoriaModal}>
+                    <div className={styles.modalContent}>
+                        <h2>Editar Categoria</h2>
+                        <form onSubmit={(e) => e.preventDefault()}>
+                            <label>Nome:</label>
+                            <input type="text" id="nome" value={novaCategoria.nome} onChange={(e) => setNovaCategoria({...novaCategoria, nome: e.target.value})} required />
+                        </form>
+                        <button type="submit" onClick={handleEditarCategoria}>Salvar</button>
+                        <button onClick={closeEditCategoria}>Fechar</button>
+                    </div>
+                </div>
+
+            )}
 
         </main>
     )

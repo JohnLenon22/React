@@ -200,6 +200,7 @@
 }
 
 .modalContent input[type="text"],
+.modalContent select,
 .modalContent input[type="number"] {
   width: 100%;
   padding: 8px;

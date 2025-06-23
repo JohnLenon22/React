@@ -5,6 +5,7 @@ export const CategoriaContext = createContext({
     categorias: [],
     adicionarCategoria: () => {},
     deletarCategoria: () => {},
+    editarCategoria: () => {},
     setCategorias: () => {},
     filtro: '',
     setFiltro: () => {},
@@ -37,20 +38,39 @@ export function CategoriaProvider({ children }) {
 
     const adicionarCategoria = async (novaCategoria) => {
         try {
-            const response = await api.post(`/categories/`, novaCategoria);
-            if(response.status === 201){
-                setCategorias(prevCategorias => [...prevCategorias, novaCategoria]);
-                console.log(`Categoria adicionado com sucesso: ${response.data}`);
+            const response = await api.post(`/categories`, novaCategoria);
+            if(response.status === 201) { 
+                const res = await api.get('/categories');
+                setCategorias(res.data)
+                console.log(`Categoria adicionada com sucesso:`, response.data);
+                return true;
             }
+            return false;
         } catch (error) {
             console.error("Erro ao adicionar categoria:", error);
+            return false;
         }
     };
+    
+    const editarCategoria = async (id, categoria) => {
+        console.log(id, categoria);
+        try {
+            const response = await api.put(`/categories/${id}`, categoria);
+            if (response.status === 200) {
+                const res = await api.get('/categories');
+                setCategorias(res.data)
+                console.log(`Categoria editada com sucesso:`, response.data);
+            }
+        } catch (error) {
+            console.error("Erro ao editar categoria:", error);
+        }
+};
 
     const contextValue = {
         categorias,
         adicionarCategoria,
         deletarCategoria,
+        editarCategoria,
         setCategorias,
         filtro,
         setFiltro,
