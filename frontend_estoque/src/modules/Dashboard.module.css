@@ -116,6 +116,7 @@
 }
 
 .searchBox {
+  
   display: flex;
   align-items: center;
   flex-grow: 1;
@@ -123,10 +124,9 @@
 }
 
 .searchBox input[type="text"] {
+  width: 30rem;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 5px;
   font-size: 1em;
-  width: 100%;
-  
 }

@@ -13,12 +13,12 @@ export default function Dashboard() {
   const produtosFiltrados = produtos.filter(produto => {
         const filtroLower = filtro.toLowerCase();
 
-        const id = String(produto.nome || '');
         const nome = String(produto.nome || '');
         const idCategoria = String(produto.idCategoria || '');
         const dataCadastro = String(produto.dataCadastro || '');
         const precoVenda = String(produto.precoVenda || '');
         const precoCompra = String(produto.precoCompra || '');
+        const quantidade = String(produto.quantidade || '');
         const descricao = String(produto.descricao || '');
 
         return (
@@ -27,11 +27,25 @@ export default function Dashboard() {
             dataCadastro.toLowerCase().includes(filtroLower) ||
             precoVenda.toLowerCase().includes(filtroLower) ||
             precoCompra.toLowerCase().includes(filtroLower) ||
+            quantidade.toLowerCase().includes(filtroLower) ||
             descricao.toLowerCase().includes(filtroLower)
         );
     }).sort((a, b) => a.nome.localeCompare(b.nome));
 
-  const alertaProdutos = produtos.filter(produto => produto.quantidade === 0)
+
+    const alertaProdutos = produtos.filter(produto => produto.quantidade === 0)
+
+    const produtosAlertaFiltrados = alertaProdutos.filter(produto => {
+        const filtroLower = filtro.toLowerCase();
+
+        const nome = String(produto.nome || '');
+        return (
+            nome.toLowerCase().includes(filtroLower) 
+
+        );
+    }).sort((a, b) => a.nome.localeCompare(b.nome));
+
+  
 
   const valorEstocado = produtos ? produtos.reduce((acc, produto) => {
         const preco = parseFloat(produto.precoCompra); 
@@ -75,8 +89,8 @@ export default function Dashboard() {
               </tr>
             </thead>
             <tbody>
-              {alertaProdutos.length > 0 ? (
-                alertaProdutos.map((produto) => (
+              {produtosAlertaFiltrados.length > 0 ? (
+                produtosAlertaFiltrados.map((produto) => (
                   <tr value={produto.id}>
                     <td>{produto.nome}</td>
                     <td>{produto.quantidade}</td>
@@ -103,7 +117,7 @@ export default function Dashboard() {
             <form>
               <input 
                   type="text" 
-                  placeholder="Buscar ( Nome,Categoria )" 
+                  placeholder="Buscar produto" 
                   value={filtro}
                   onChange={(e)=> setFiltro(e.target.value)}
               />
@@ -118,10 +132,10 @@ export default function Dashboard() {
               <tr>
                 <th>Nome</th>
                 <th>Categoria</th>
+                <th>Quantidade</th>
                 <th>Data Cadastro</th>
                 <th>Preço Compra</th>
                 <th>Preço Venda</th>
-                <th>Descricao</th>
               </tr>
             </thead>
             <tbody>
@@ -130,10 +144,22 @@ export default function Dashboard() {
                   <tr key={produto.id}>
                       <td>{produto.nome}</td>
                       <td>{getNomeCategoria(produto.idCategoria)}</td>
-                      <td>{produto.dataCadastro}</td>
-                      <td>{produto.precoVenda.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                      <td>{produto.quantidade}</td>
+                      <td>{produto.dataCadastro ? 
+                            new Date(produto.dataCadastro).toLocaleString('pt-BR', {
+                                year: 'numeric',
+                                month: '2-digit',
+                                day: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                hour12: true // Formato 24h
+                            }) : 'N/A'
+
+                          }
+                      </td>
                       <td>{produto.precoCompra.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
-                      <td>{produto.descricao}</td>
+                      <td>{produto.precoVenda.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</td>
+                      
                   </tr>
                   ))
               ) : (
