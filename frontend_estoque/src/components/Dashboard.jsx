@@ -111,7 +111,7 @@ export default function Dashboard() {
         <div className={styles.topRight}>
           <div className={styles.outStockCard}>
             <label>Fora de estoque</label>
-            <h2>20</h2>
+            <h2 style={{ color: 'red' }}>{alertaProdutos.length}</h2>
           </div>
           <div className={styles.searchBox}>
             <form>
