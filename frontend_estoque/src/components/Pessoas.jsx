@@ -1,4 +1,4 @@
-import styles from '../modules/LocaisArmazenamento.module.css'
+import styles from '../modules/Produtos.module.css'
 import { AiFillDelete } from "react-icons/ai";
 import { AiFillEdit } from "react-icons/ai";
 import { useContext, useState } from 'react'
@@ -49,7 +49,7 @@ export default function Pessoas(){
     }
 
     const openEditPessoa = (pessoa) => {
-        setNovaPessoa({ id: pessoa.id, nome: pessoa.nome });
+        setNovaPessoa({ id: pessoa.id, nome: pessoa.nome, tipoPessoa: pessoa.tipoPessoa });
         setIsEditPessoaOpen(true)
     }
     const closeEditPessoa = ( ) => {
@@ -101,7 +101,7 @@ export default function Pessoas(){
                         <form onSubmit={(e) => e.preventDefault()}>
                             <input 
                                 type="text" 
-                                placeholder="Buscar" 
+                                placeholder="Buscar por nome ou tipo" 
                                 value={filtro}
                                 onChange={(e)=> setFiltro(e.target.value)}
                             />
@@ -140,7 +140,7 @@ export default function Pessoas(){
                 </table>
             </div>
             {isAddPessoaOpen && (
-                <div className={styles.addPessoaModal}>
+                <div className={styles.addLocalModal}>
                     <div className={styles.modalContent}>
                         <h2>Adicionar pessoa</h2>
                         <form onSubmit={(e) => e.preventDefault()}>
@@ -151,7 +151,7 @@ export default function Pessoas(){
                             <select id="nome" value={novaPessoa.tipoPessoa} onChange={(e) => setNovaPessoa({...novaPessoa, tipoPessoa: e.target.value})} required>
                                 <option value="">Selecione um tipo de pessoa</option>
                                 {tiposPessoa.map((tipo)=>(
-                                    <option key={tipo.id} value={tipo.value}>
+                                    <option key={tipo.value} value={tipo.value}>
                                         {tipo.value}
                                     </option>
                                 ))
@@ -165,7 +165,7 @@ export default function Pessoas(){
                 </div>
             )}
             {isEditPessoaOpen && (
-                <div className={styles.addPessoaModal}>
+                <div className={styles.addLocalModal}>
                     <div className={styles.modalContent}>
                         <h2>Editar Pessoa</h2>
                         <form onSubmit={(e) => e.preventDefault()}>
@@ -176,7 +176,7 @@ export default function Pessoas(){
                             <select id="nome" value={novaPessoa.tipoPessoa} onChange={(e) => setNovaPessoa({...novaPessoa, tipoPessoa: e.target.value})} required>
                                 <option value="">Selecione um tipo de pessoa</option>
                                 {tiposPessoa.map((tipo)=>(
-                                    <option key={tipo.id} value={tipo.value}>
+                                    <option key={tipo.value} value={tipo.value}>
                                         {tipo.value}
                                     </option>
                                 ))

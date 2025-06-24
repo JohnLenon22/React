@@ -9,14 +9,27 @@ export default function Dashboard() {
   const { produtos, filtro, setFiltro } = useContext(ProdutoContext);
   const { categorias } = useContext(CategoriaContext)
   const { locaisArmazenamento } = useContext(LocalArmazenamentoContext)
-  const produtosFiltrados = produtos.filter(produto =>
-      produto.nome.toLowerCase().includes(filtro.toLowerCase()) ||
-      produto.idCategoria.toLowerCase().includes(filtro.toLowerCase()) ||
-      produto.dataCadastro.toLowerCase().includes(filtro.toLowerCase()) ||
-      produto.precoVenda.toLowerCase().includes(filtro.toLowerCase()) ||
-      produto.precoCompra.toLowerCase().includes(filtro.toLowerCase()) ||
-      produto.descricao.toLowerCase().includes(filtro.toLowerCase())
-  )
+
+  const produtosFiltrados = produtos.filter(produto => {
+        const filtroLower = filtro.toLowerCase();
+
+        const id = String(produto.nome || '');
+        const nome = String(produto.nome || '');
+        const idCategoria = String(produto.idCategoria || '');
+        const dataCadastro = String(produto.dataCadastro || '');
+        const precoVenda = String(produto.precoVenda || '');
+        const precoCompra = String(produto.precoCompra || '');
+        const descricao = String(produto.descricao || '');
+
+        return (
+            nome.toLowerCase().includes(filtroLower) ||
+            idCategoria.toLowerCase().includes(filtroLower) ||
+            dataCadastro.toLowerCase().includes(filtroLower) ||
+            precoVenda.toLowerCase().includes(filtroLower) ||
+            precoCompra.toLowerCase().includes(filtroLower) ||
+            descricao.toLowerCase().includes(filtroLower)
+        );
+    }).sort((a, b) => a.nome.localeCompare(b.nome));
 
   const alertaProdutos = produtos.filter(produto => produto.quantidade === 0)
 
@@ -90,7 +103,7 @@ export default function Dashboard() {
             <form>
               <input 
                   type="text" 
-                  placeholder="Buscar" 
+                  placeholder="Buscar ( Nome,Categoria )" 
                   value={filtro}
                   onChange={(e)=> setFiltro(e.target.value)}
               />

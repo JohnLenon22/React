@@ -1,4 +1,4 @@
-import styles from '../modules/Categorias.module.css'
+import styles from '../modules/LocaisArmazenamento.module.css'
 import { AiFillDelete } from "react-icons/ai";
 import { AiFillEdit } from "react-icons/ai";
 import { useContext, useState } from 'react'
@@ -129,7 +129,7 @@ export default function Categorias(){
                 </table>
             </div>
             {isAddCategoriaOpen && (
-                <div className={styles.addCategoriaModal}>
+                <div className={styles.addLocalModal}>
                     <div className={styles.modalContent}>
                         <h2>Adicionar Categoria</h2>
                         <form onSubmit={(e) => e.preventDefault()}>
@@ -142,7 +142,7 @@ export default function Categorias(){
                 </div>
             )}
             {isEditCategoriaOpen && (
-                <div className={styles.addCategoriaModal}>
+                <div className={styles.addLocalModal}>
                     <div className={styles.modalContent}>
                         <h2>Editar Categoria</h2>
                         <form onSubmit={(e) => e.preventDefault()}>

@@ -1,4 +1,4 @@
-import styles from '../modules/Produtos.module.css'
+import styles from '../modules/LocaisArmazenamento.module.css'
 import { AiFillDelete } from "react-icons/ai";
 import { AiFillEdit } from "react-icons/ai";
 import { useContext, useState } from 'react'

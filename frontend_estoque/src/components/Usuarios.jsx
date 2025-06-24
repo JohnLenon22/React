@@ -1,4 +1,4 @@
-import styles from '../modules/LocaisArmazenamento.module.css'
+import styles from '../modules/Produtos.module.css'
 import { AiFillDelete } from "react-icons/ai";
 import { AiFillEdit } from "react-icons/ai";
 import { useContext, useState } from 'react'
@@ -23,6 +23,15 @@ export default function Usuarios(){
         { value: 'OPERADOR' },
     ];
 
+    const mascararSenha = (senhaHash) => {
+    if (!senhaHash || senhaHash.length <= 2) {
+        return senhaHash; // Se for menor que 2 caracteres, retorna como está
+    }
+    const primeiraLetra = senhaHash.charAt(0);
+    const ultimaLetra = senhaHash.charAt(senhaHash.length - 1);
+    const meio = '*'.repeat(senhaHash.length - 2);
+    return `${primeiraLetra}${meio}${ultimaLetra}`;
+};
 
     const usuariosFiltradas = usuarios.filter(usuario => {
         const filtroLower = filtro.toLowerCase();
@@ -72,10 +81,17 @@ export default function Usuarios(){
     }
 
     const handleSalvarUsuario = () => {
-        if(novaUsuario.nome.trim() === '' || novaUsuario.tipoUsuario.trim() === '') {
-            alert('Preencha todos os campos')
+
+        if((usuarios.some((e) => e.email.trim().toLowerCase() === novaUsuario.email.trim().toLowerCase()))=== true) {
+            alert('E-mail já cadastrado')
             return;
         }
+
+        if(novaUsuario.senhaHash.length<8){
+            alert('A senha deve ter pelo menos 8 caracteres')
+            return;
+        }
+
         adicionarUsuario(novaUsuario)
         setNovaUsuario({
             id: null,
@@ -87,15 +103,15 @@ export default function Usuarios(){
         closeAddUsuario()
     }
 
-    const handleDeletarUsuario = (Usuario) =>{
-        if (window.confirm(`Tem certeza que deseja deletar ${Usuario.nome}?`)) {
-            deletarUsuario(Usuario.id); 
+    const handleDeletarUsuario = (usuario) =>{
+        if (window.confirm(`Tem certeza que deseja deletar ${usuario.nome}?`)) {
+            deletarUsuario(usuario.id); 
         }
     }
 
     const handleEditarUsuario = () => {
-        if(novaUsuario.nome.trim() === '' || novaUsuario.tipoUsuario.trim() === '' || novaUsuario.email.trim() === '' || novaUsuario.senhaHash.trim() === '') {
-            alert('Preencha todos os campos')
+        if(novaUsuario.senhaHash.length<8){
+            alert('A senha deve ter pelo menos 8 caracteres')
             return;
         }
         editarUsuario(novaUsuario.id, {
@@ -132,7 +148,7 @@ export default function Usuarios(){
                         <form onSubmit={(e) => e.preventDefault()}>
                             <input 
                                 type="text" 
-                                placeholder="Buscar" 
+                                placeholder="Buscar por nome,email,tipo..." 
                                 value={filtro}
                                 onChange={(e)=> setFiltro(e.target.value)}
                             />
@@ -157,7 +173,7 @@ export default function Usuarios(){
                                 <td>{usuario.id}</td>
                                 <td>{usuario.nome}</td>
                                 <td>{usuario.email}</td>
-                                <td>{usuario.senhaHash}</td>
+                                <td>{mascararSenha(usuario.senhaHash)}</td>
                                 <td>{usuario.tipoUsuario}</td>
                                 <td>
                                     <button onClick={() => openEditUsuario(usuario)}><AiFillEdit/></button>
@@ -175,7 +191,7 @@ export default function Usuarios(){
                 </table>
             </div>
             {isAddUsuarioOpen && (
-                <div className={styles.addUsuarioModal}>
+                <div className={styles.addLocalModal}>
                     <div className={styles.modalContent}>
                         <h2>Adicionar Usuario</h2>
                         <form onSubmit={(e) => e.preventDefault()}>
@@ -190,7 +206,7 @@ export default function Usuarios(){
                             <select id="nome" value={novaUsuario.tipoUsuario} onChange={(e) => setNovaUsuario({...novaUsuario, tipoUsuario: e.target.value})} required>
                                 <option value="">Selecione um tipo de Usuario</option>
                                 {tiposUsuario.map((tipo)=>(
-                                    <option key={tipo.id} value={tipo.value}>
+                                    <option key={tipo.value} value={tipo.value}>
                                         {tipo.value}
                                     </option>
                                 ))
@@ -204,7 +220,7 @@ export default function Usuarios(){
                 </div>
             )}
             {isEditUsuarioOpen && (
-                <div className={styles.addUsuarioModal}>
+                <div className={styles.addLocalModal}>
                     <div className={styles.modalContent}>
                         <h2>Editar Usuario</h2>
                         <form onSubmit={(e) => e.preventDefault()}>
@@ -219,7 +235,7 @@ export default function Usuarios(){
                             <select id="nome" value={novaUsuario.tipoUsuario} onChange={(e) => setNovaUsuario({...novaUsuario, tipoUsuario: e.target.value})} required>
                                 <option value="">Selecione um tipo de Usuario</option>
                                 {tiposUsuario.map((tipo)=>(
-                                    <option key={tipo.id} value={tipo.value}>
+                                    <option key={tipo.value} value={tipo.value}>
                                         {tipo.value}
                                     </option>
                                 ))

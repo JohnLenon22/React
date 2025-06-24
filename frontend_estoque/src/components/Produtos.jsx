@@ -144,7 +144,7 @@ export default function Produtos(){
                         <form onSubmit={(e) => e.preventDefault()}>
                             <input 
                                 type="text" 
-                                placeholder="Buscar" 
+                                placeholder="Buscar por nome ou categoria" 
                                 value={filtro}
                                 onChange={(e)=> setFiltro(e.target.value)}
                             />
@@ -204,7 +204,7 @@ export default function Produtos(){
                 </table>
             </div>
             {isAddProdutoOpen && (
-                <div className={styles.addProdutoModal}>
+                <div className={styles.addLocalModal}>
                     <div className={styles.modalContent}>
                         <h2>Adicionar Produto</h2>
                         <form onSubmit={(e) => e.preventDefault()}>
@@ -233,7 +233,7 @@ export default function Produtos(){
                 </div>
             )}
             {isEditProdutoOpen && (
-                <div className={styles.addProdutoModal}>
+                <div className={styles.addLocalModal}>
                     <div className={styles.modalContent}>
                         <h2>Editar Produto</h2>
                         <form onSubmit={(e) => e.preventDefault()}>
