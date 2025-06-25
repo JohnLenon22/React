@@ -63,7 +63,7 @@ export function UsuarioProvider({ children }) {
         } catch (error) {
             console.error("Erro ao editar usuario:", error);
         }
-};
+    };
 
     const contextValue = {
         usuarios,

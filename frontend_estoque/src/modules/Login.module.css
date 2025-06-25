@@ -1,139 +1,161 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
-}
-
-body {
-  background-color: #f4f4f4; 
-}
-
+/* Estilos Globais e do Container Principal */
 .container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  width: 100%;
-  background-color: #f4f4f4; 
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
 }
 
+/* Card do Formulário */
 .container2 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: #ffffff; 
-  padding: 2rem;
-  border-radius: 1.5rem;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  width: 90%;
-  max-width: 400px;
+    background-color: white;
+    padding: 2.5rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
 }
 
 .containerForm {
-  width: 100%;
-  background-color: transparent; 
+    width: 100%;
 }
 
-.containerForm form{
-  background-color: transparent;
-}
-
+/* Título (LOGIN / Cadastro) */
 .textLogin {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-  font-weight: 600;
-  color: #333; 
-  text-align: center;
-  background-color: transparent; 
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 2rem;
 }
 
+/* Grupo de Input (Label + Input) */
 .inputGroup {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1rem;
-  background-color: transparent;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    position: relative;
 }
 
+/* Labels (Email, Senha) */
 .label {
-  margin-bottom: 0.3rem;
-  font-weight: 500;
-  color: #555; 
-  background-color: transparent; 
+    display: block;
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
 }
 
+/* Inputs de Texto e Senha */
 .input {
-  padding: 0.75rem 1rem;
-  border: 2px solid #ccc;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  background-color: #fff; /* Fundo branco dos inputs */
-  color: #333; /* Cor do texto dos inputs */
-  transition: border-color 0.3s ease;
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .input:focus {
-  border-color: #007bff;
-  outline: none;
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
 }
 
-
-.containerForgotPassword {
-  display: flex;
-  justify-content: flex-end;
-  margin-bottom: 1rem;
-  background-color: transparent;
+.input::placeholder {
+    color: #aaa;
 }
 
+/* Links (Recuperar Senha / Cadastre-se) */
 .forgotPassword {
-  color: #007bff;
-  text-decoration: none;
-  font-size: 0.9rem;
-  transition: color 0.3s ease;
-  background-color: transparent; /* Garantindo fundo transparente */
+    display: block;
+    margin-top: 0.75rem;
+    color: #667eea;
+    font-size: 0.9rem;
+    text-decoration: none;
+    text-align: right;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-family: inherit; /* Garante que o botão tenha a mesma fonte */
 }
 
 .forgotPassword:hover {
-  color: #0056b3;
+    text-decoration: underline;
 }
 
+/* Container para os botões */
+.containerButton {
+    margin-top: 1.5rem;
+}
+
+/* Botão Principal (ENTRAR / Cadastrar) */
 .loginButton {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+    width: 100%;
+    padding: 0.8rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #667eea;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .loginButton:hover {
-  background-color: #0056b3;
+    background-color: #5a6edc;
+    transform: translateY(-2px);
 }
 
+.loginButton:active {
+    transform: translateY(0);
+}
+
+
+/* --- Estilos do Modal de Cadastro --- */
+
+/* Overlay (fundo escuro semi-transparente) */
 .modalOverlay {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7);
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
     z-index: 1000;
 }
 
+/* Conteúdo do Modal */
 .modalContent {
     background-color: white;
-    padding: 2rem;
+    padding: 2.5rem;
     border-radius: 10px;
-    width: 400px;
-    max-width: 90%;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
 }
 
+/* Espaçamento para o botão 'Fechar' no modal */
+.modalContent .containerButton {
+    margin-top: 1rem;
+}
+
+/* Responsividade para Telas Pequenas */
+@media (max-width: 480px) {
+    .container2, .modalContent {
+        padding: 1.5rem;
+        margin: 0 1rem;
+    }
+
+    .textLogin {
+        font-size: 1.8rem;
+    }
+}

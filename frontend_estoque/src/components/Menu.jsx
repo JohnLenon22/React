@@ -4,8 +4,13 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 export default function Menu() {
   const navigate = useNavigate();
-
   const location = useLocation();
+
+  const logout = () =>{
+    localStorage.removeItem('usuarioId');
+    navigate('/');
+  }
+
 
   const menuItems = [
     { text: 'Dashboard', path: '/Dashboard' },
@@ -18,13 +23,11 @@ export default function Menu() {
    
   ];
 
-
   return (
     <div className={styles.container}>
       <nav className={styles.sidebar}>
         <div className={styles.titleNav}>
           <img src={logoStockUp} alt="Logo" />
-          
         </div>
 
         <div className={styles.contentNav}>
@@ -39,6 +42,7 @@ export default function Menu() {
           ))}
         </div>
       </nav>
+      <button onClick={() => logout()}></button>
     </div>
   );
 }
