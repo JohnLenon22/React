@@ -37,6 +37,7 @@ export function MovimentacaoEstoqueProvider({ children }) {
     };
 
     const adicionarMovimentacaoEstoque = async (novaMovimentacao) => {
+        console.log(novaMovimentacao)
         try {
             const response = await api.post(`/movimentInventories`, novaMovimentacao);
             if(response.status === 201) { 

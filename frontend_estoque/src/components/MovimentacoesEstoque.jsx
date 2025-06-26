@@ -14,7 +14,7 @@ export default function MovimentacoesEstoque(){
     const [isEditMovimentacaoEstoqueOpen, setIsEditMovimentacaoEstoqueOpen] = useState(false)
     const {movimentacoesEstoque, deletarMovimentacaoEstoque, adicionarMovimentacaoEstoque, editarMovimentacaoEstoque, filtro, setFiltro}  = useContext(MovimentacaoEstoqueContext)
     const [novaMovimentacaoEstoque, setNovaMovimentacaoEstoque] = useState({
-        id: '',
+        id: null,
         tipoMovimentacao: '',
         quantidade: '',
         idProduto: '',
@@ -58,7 +58,7 @@ export default function MovimentacoesEstoque(){
     const movimentacoesEstoqueFiltradas = movimentacoesEstoque.filter(movimentacao => {
         const filtroLower = filtro.toLowerCase();
 
-        const id = String(movimentacao.id || '');
+        const id = String(movimentacao.id || null);
         const tipoMovimentacao = String(movimentacao.tipoMovimentacao || '');
         const quantidade = String(movimentacao.quantidade || '');
         const idProduto = String(movimentacao.idProduto || '');
@@ -80,7 +80,7 @@ export default function MovimentacoesEstoque(){
 
     const openAddMovimentacaoEstoque = ( ) => {
         setNovaMovimentacaoEstoque({
-            id: '',
+            id: null,
             tipoMovimentacao: '',
             quantidade: '',
             idProduto: '',
@@ -116,9 +116,14 @@ export default function MovimentacoesEstoque(){
             alert('Preencha todos os campos!')
             return
         }
-        adicionarMovimentacaoEstoque(novaMovimentacaoEstoque); 
+
+        const dadosMovimentacaoEstoque = {
+            ...novaMovimentacaoEstoque,
+            quantidade: parseInt(novaMovimentacaoEstoque.quantidade),
+        };
+        adicionarMovimentacaoEstoque(dadosMovimentacaoEstoque); 
         setNovaMovimentacaoEstoque({
-            id: '',
+            id: null,
             tipoMovimentacao: '',
             quantidade: '',
             idProduto: '',
@@ -136,16 +141,22 @@ export default function MovimentacoesEstoque(){
     }
 
     function handleEditarMovimentacaoEstoque(){
-        editarMovimentacaoEstoque(novaMovimentacaoEstoque.id, {
-            tipoMovimentacao: novaMovimentacaoEstoque.tipoMovimentacao,
-            quantidade: novaMovimentacaoEstoque.quantidade,
-            idProduto: novaMovimentacaoEstoque.idProduto,
-            idUsuario: novaMovimentacaoEstoque.idUsuario,
-            idPessoa: novaMovimentacaoEstoque.idPessoa,
-            idLocalArmazenamento: novaMovimentacaoEstoque.idLocalArmazenamento
+
+        const dadosMovimentacaoEstoque = {
+            ...novaMovimentacaoEstoque,
+            quantidade: parseInt(novaMovimentacaoEstoque.quantidade),
+        };
+        
+        editarMovimentacaoEstoque(dadosMovimentacaoEstoque.id, {
+            tipoMovimentacao: dadosMovimentacaoEstoque.tipoMovimentacao,
+            quantidade: dadosMovimentacaoEstoque.quantidade,
+            idProduto: dadosMovimentacaoEstoque.idProduto,
+            idUsuario: dadosMovimentacaoEstoque.idUsuario,
+            idPessoa: dadosMovimentacaoEstoque.idPessoa,
+            idLocalArmazenamento: dadosMovimentacaoEstoque.idLocalArmazenamento
         })
         setNovaMovimentacaoEstoque({
-            id: '',
+            id: null,
             tipoMovimentacao: '',
             quantidade: '',
             idProduto: '',
@@ -166,6 +177,7 @@ export default function MovimentacoesEstoque(){
             <div className={styles.tableBox}>
                 <div className={styles.group}>
                     <div className={styles.groupButtons}>
+                        <button className={styles.buttonReload} onClick={openAddMovimentacaoEstoque}>Realizar Movimentação Estoque</button>
                         <button className={styles.buttonAdd} onClick={openAddMovimentacaoEstoque}>Realizar Movimentação Estoque</button>
                     </div>
                     <div className={styles.searchBox}>
@@ -257,7 +269,7 @@ export default function MovimentacoesEstoque(){
                             <select id="tipoMovimentacao" value={novaMovimentacaoEstoque.tipoMovimentacao} onChange={(e) => setNovaMovimentacaoEstoque({...novaMovimentacaoEstoque, tipoMovimentacao: e.target.value})} required>
                                 <option value="">Selecione um local</option>
                                 {tiposMovimentacao.map((tipo) => (
-                                    <option key={tipo.id} value={tipo.value}>
+                                    <option key={tipo.value} value={tipo.value}>
                                         {tipo.value} 
                                     </option> 
                                 ))}
@@ -266,7 +278,7 @@ export default function MovimentacoesEstoque(){
                             <label>Quantidade:</label>
                             <input type="number" id="quantidade" value={novaMovimentacaoEstoque.quantidade} onChange={(e) => setNovaMovimentacaoEstoque({...novaMovimentacaoEstoque, quantidade: e.target.value})} required />
                             
-                            <label>ID Local Armazenamento:</label>
+                            <label>Local Armazenamento:</label>
                             <select id="idLocalArmazenamento" value={novaMovimentacaoEstoque.idLocalArmazenamento} onChange={(e) => setNovaMovimentacaoEstoque({...novaMovimentacaoEstoque, idLocalArmazenamento: e.target.value})} required>
                                 <option value="">Selecione um local</option>
                                 {locaisArmazenamento.map((local) => (
@@ -324,7 +336,7 @@ export default function MovimentacoesEstoque(){
                             <select id="tipoMovimentacao" value={novaMovimentacaoEstoque.tipoMovimentacao} onChange={(e) => setNovaMovimentacaoEstoque({...novaMovimentacaoEstoque, tipoMovimentacao: e.target.value})} required>
                                 <option value="">Selecione um local</option>
                                 {tiposMovimentacao.map((tipo) => (
-                                    <option key={tipo.id} value={tipo.value}>
+                                    <option key={tipo.value} value={tipo.value}>
                                         {tipo.value} 
                                     </option> 
                                 ))}

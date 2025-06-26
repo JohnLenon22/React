@@ -219,7 +219,7 @@ export default function Produtos(){
                                     </option>
                                 ))}
                             </select>
-                            
+                
                             <label>Preço Compra:</label>
                             <input type="number" step="0.01" value={novoProduto.precoCompra} onChange={(e) => setNovoProduto({...novoProduto, precoCompra: e.target.value})} placeholder="R$ " required />
                             <label>Preço Venda:</label>

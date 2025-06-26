@@ -105,7 +105,7 @@ function App() {
       <AppProviders>
         <Routes>
           <Route path="/" element={<Login />} />
-          <Route path="/Unauthorized" element={<Unauthorized/>}/>
+          <Route path="/Unauthorized" element={<PrivateRoute><Unauthorized/></PrivateRoute> }/>
 
           <Route path="/Dashboard" element={<PrivateRoute allowedRoles={["ADMIN"]}> <Menu /><Dashboard /> </PrivateRoute> } />
           
