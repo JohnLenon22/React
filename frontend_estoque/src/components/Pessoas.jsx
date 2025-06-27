@@ -78,7 +78,9 @@ export default function Pessoas(){
             alert('Preencha todos os campos')
             return;
         }
-        editarPessoa(novaPessoa.id, {nome: novaPessoa.nome, tipoPessoa: novaPessoa.tipoPessoa});
+        editarPessoa(novaPessoa.id, {
+            nome: novaPessoa.nome, 
+            tipoPessoa: novaPessoa.tipoPessoa});
         setNovaPessoa({id: null, nome: '', tipoPessoa: ''})
         closeEditPessoa()
 

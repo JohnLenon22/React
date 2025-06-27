@@ -37,6 +37,7 @@
     margin-bottom: 1.5rem;
     text-align: left;
     position: relative;
+    margin-right: 1.5rem;
 }
 
 /* Labels (Email, Senha) */
@@ -89,7 +90,7 @@
 
 /* Container para os botões */
 .containerButton {
-    margin-top: 1.5rem;
+    margin-top: 2rem;
 }
 
 /* Botão Principal (ENTRAR / Cadastrar) */

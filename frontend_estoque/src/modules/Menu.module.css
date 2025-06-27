@@ -38,6 +38,7 @@
 
 .contentNav {
   width: 100%;
+  flex: 1
 }
 
 .contentNav button {
@@ -66,3 +67,126 @@
 .contentNav .active:hover {
   background-color: #0056b3;
 }
+
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background-color: #fff;
+  padding: 2rem 3rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  text-align: center;
+}
+
+.modalContent h2 {
+  margin-bottom: 1rem;
+}
+
+.modalContent p {
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.confirmButton {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  margin-right: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.confirmButton:hover {
+  background-color: #c9302c;
+}
+
+.cancelButton {
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.cancelButton:hover {
+  background-color: #5a6268;
+}
+
+.userSection {
+  
+  height: auto;
+  width: 80%;
+  margin: 1rem;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column; /* ou row se quiser lado a lado */
+  gap: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  align-items: flex-start;
+}
+
+.userInfo {
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.userInfo p {
+  margin: 0.2rem 0;
+  font-weight: 500;
+}
+
+.buttonLogout {
+  width: 100%;
+}
+
+.logoutButton {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  background-color: #e53935;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.logoutButton:hover {
+  background-color: #c62828;
+}
+
+
+.logoutButton {
+  width: 100%;
+  background-color: #e53935;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.logoutButton:hover {
+  background-color: #c62828;
+}
+

@@ -30,7 +30,7 @@ export function PessoaProvider({ children }) {
     const deletarPessoa = async (id) => {
         try {
             await api.delete(`/persons/${id}`);
-            setPessoas(Pessoas.filter(Pessoa => Pessoa.id !== id));
+            setPessoas(pessoas.filter(pessoa => pessoa.id !== id));
         } catch (error) {
             console.error("Erro ao deletar pessoa:", error);
         }

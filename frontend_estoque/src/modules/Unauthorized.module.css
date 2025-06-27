@@ -1,0 +1,35 @@
+.modal{
+    display: flex;
+
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    width: 100vw;
+}
+.modalContent {
+    background-color: khaki;
+    padding: 2rem;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    text-align: center;
+}
+.modalContent h2 {
+    margin-bottom: 1rem;
+}
+.modalContent p {
+    margin-bottom: 1.5rem;
+}
+.modalContent button { 
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background-color: #585858;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.modalContent button:hover {
+    background-color: #404040;
+}
+

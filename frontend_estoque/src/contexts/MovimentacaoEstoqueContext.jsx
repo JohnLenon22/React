@@ -7,6 +7,7 @@ export const MovimentacaoEstoqueContext = createContext({
     deletarMovimentacaoEstoque: () => {},
     editarMovimentacaoEstoque: () => {},
     setMovimentacoesEstoque: () => {},
+    fetchMovimentacoesEstoque: () => {},
     filtro: '',
     setFiltro: () => {},
 });
@@ -41,8 +42,8 @@ export function MovimentacaoEstoqueProvider({ children }) {
         try {
             const response = await api.post(`/movimentInventories`, novaMovimentacao);
             if(response.status === 201) { 
-                const res = await api.get('/movimentInventories');
-                setMovimentacoesEstoque(res.data)
+                const response = await api.get('/movimentInventories');
+                setMovimentacoesEstoque(response.data);
                 console.log(`Movimentação adicionada com sucesso:`, response.data);
                 return true;
             }
@@ -58,8 +59,8 @@ export function MovimentacaoEstoqueProvider({ children }) {
         try {
             const response = await api.put(`/movimentInventories/${id}`, movimentacao);
             if (response.status === 200) {
-                const res = await api.get('/movimentInventories');
-                setMovimentacoesEstoque(res.data)
+                const response = await api.get('/movimentInventories');
+                setMovimentacoesEstoque(response.data);
                 console.log(`Movimentação editada com sucesso:`, response.data);
             }
         } catch (error) {

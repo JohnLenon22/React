@@ -9,6 +9,8 @@ export default function PrivateRoute({ children, allowedRoles }) {
     return <Navigate to="/" />;
   }
 
+  
+
   if (allowedRoles && !allowedRoles.includes(user.tipoUsuario)) {
     return <Navigate to="/Unauthorized" />; 
   }

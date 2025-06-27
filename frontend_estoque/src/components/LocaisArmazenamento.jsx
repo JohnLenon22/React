@@ -126,7 +126,7 @@ export default function LocaisArmazenamento(){
                     <tbody>
                         {locaisArmazenamentoFiltrados.length > 0 ? (
                             locaisArmazenamentoFiltrados.map((localArmazenamento) => (
-                            <tr key={localArmazenamento.nome}>
+                            <tr key={localArmazenamento.id}>
                                 <td>{localArmazenamento.id}</td>
                                 <td>{localArmazenamento.nome}</td>
                                 <td>{localArmazenamento.endereco}</td>

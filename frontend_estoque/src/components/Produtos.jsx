@@ -1,7 +1,6 @@
 import styles from '../modules/Produtos.module.css';
 import { AiFillDelete } from "react-icons/ai";
 import { AiFillEdit } from "react-icons/ai";
-
 import { useContext, useState } from 'react';
 import { ProdutoContext } from '../contexts/ProdutoContext';
 import { CategoriaContext } from '../contexts/CategoriaContext';
@@ -17,7 +16,8 @@ export default function Produtos(){
         idCategoria: '',
         precoVenda: '',
         precoCompra: '',
-        descricao: ''
+        descricao: '',
+        quantidade: '',
     })
     const {categorias} = useContext(CategoriaContext)
 
@@ -29,13 +29,13 @@ export default function Produtos(){
     const produtosFiltrados = produtos.filter(produto => {
         const filtroLower = filtro.toLowerCase();
 
-        const id = String(produto.nome || '');
         const nome = String(produto.nome || '');
         const idCategoria = String(produto.idCategoria || '');
         const dataCadastro = String(produto.dataCadastro || '');
         const precoVenda = String(produto.precoVenda || '');
         const precoCompra = String(produto.precoCompra || '');
         const descricao = String(produto.descricao || '');
+        const quantidade = String(produto.quantidade || '');
 
         return (
             nome.toLowerCase().includes(filtroLower) ||
@@ -43,7 +43,8 @@ export default function Produtos(){
             dataCadastro.toLowerCase().includes(filtroLower) ||
             precoVenda.toLowerCase().includes(filtroLower) ||
             precoCompra.toLowerCase().includes(filtroLower) ||
-            descricao.toLowerCase().includes(filtroLower)
+            descricao.toLowerCase().includes(filtroLower) ||
+            quantidade.toLowerCase().includes(filtroLower) 
         );
     }).sort((a, b) => a.nome.localeCompare(b.nome));
 
@@ -55,7 +56,8 @@ export default function Produtos(){
             idCategoria: '',
             precoCompra: '',
             precoVenda: '',
-            descricao: ''
+            descricao: '',
+            quantidade: '',
         });
         setIsAddProdutoOpen(true)
     }
@@ -72,7 +74,8 @@ export default function Produtos(){
             dataCadastro: produto.dataCadastro,
             precoCompra: produto.precoCompra,
             precoVenda: produto.precoVenda,
-            descricao: produto.descricao
+            descricao: produto.descricao,
+            quantidade: produto.quantidade
         })
         setIsEditProdutoOpen(true)
     }
@@ -86,6 +89,14 @@ export default function Produtos(){
             alert('Por favor, preencha todos os campos!');
             return;
         }
+        if(novoProduto.precoCompra >= novoProduto.precoVenda){
+            alert('O preço de venda não pode ser menor ou igual ao preço de compra!');
+            return;
+        }
+        if(novoProduto.quantidade<0){
+            alert('A quantidade não pode ser negativa!');
+            return;
+        }
 
         const dadosProduto = {
             ...novoProduto,
@@ -93,6 +104,7 @@ export default function Produtos(){
             precoCompra: parseFloat(novoProduto.precoCompra), 
             precoVenda: parseFloat(novoProduto.precoVenda),   
             dataCadastro: new Date().toISOString(),
+            quantidade: parseInt(novoProduto.quantidade) || 0, 
         };
         console.log("Dados do produto sendo enviados:", dadosProduto);
         adicionarProduto(dadosProduto); 
@@ -106,12 +118,24 @@ export default function Produtos(){
     }
 
     function handleEditarProduto(){
+        if (!novoProduto.nome || !novoProduto.idCategoria || !novoProduto.precoCompra  || !novoProduto.precoVenda === '' ) {
+            alert('Por favor, preencha todos os campos!');
+            return;
+        }
+
+        if(novoProduto.precoCompra >= novoProduto.precoVenda){
+            alert('O preço de venda não pode ser menor ou igual ao preço de compra!');
+            return;
+        }
+
         const dadosProduto = {
             ...novoProduto,
             idCategoria: parseInt(novoProduto.idCategoria),
             precoCompra: parseFloat(novoProduto.precoCompra), 
             precoVenda: parseFloat(novoProduto.precoVenda),   
             dataCadastro: new Date().toISOString(),
+            quantidade: parseInt(novoProduto.quantidade) || 0, 
+
         }; 
         editarProduto(dadosProduto.id, {
             nome: dadosProduto.nome,
@@ -119,7 +143,8 @@ export default function Produtos(){
             dataCadastro: dadosProduto.dataCadastro,
             precoCompra: dadosProduto.precoCompra,
             precoVenda: dadosProduto.precoVenda,
-            descricao: dadosProduto.descricao
+            descricao: dadosProduto.descricao,
+            quantidade: dadosProduto.quantidade
         });
        
         closeEditProduto();
@@ -208,9 +233,9 @@ export default function Produtos(){
                     <div className={styles.modalContent}>
                         <h2>Adicionar Produto</h2>
                         <form onSubmit={(e) => e.preventDefault()}>
-                            <label>Nome:</label>
+                            <label>Nome</label>
                             <input type="text" id="nome" value={novoProduto.nome} onChange={(e) => setNovoProduto({...novoProduto, nome: e.target.value})} required />
-                            <label>Categoria:</label>
+                            <label>Categoria</label>
                             <select id="idCategoria" value={novoProduto.idCategoria} onChange={(e) => setNovoProduto({...novoProduto, idCategoria: e.target.value})} required>
                                 <option>Selecione uma categoria</option>
                                 {categorias.map((cat) => (
@@ -219,12 +244,15 @@ export default function Produtos(){
                                     </option>
                                 ))}
                             </select>
+
+                            <label>Quantidade</label>
+                            <input type="number" step="1" value={novoProduto.quantidade} onChange={(e) => setNovoProduto({...novoProduto, quantidade: e.target.value})} required />
                 
-                            <label>Preço Compra:</label>
+                            <label>Preço Compra</label>
                             <input type="number" step="0.01" value={novoProduto.precoCompra} onChange={(e) => setNovoProduto({...novoProduto, precoCompra: e.target.value})} placeholder="R$ " required />
-                            <label>Preço Venda:</label>
+                            <label>Preço Venda</label>
                             <input type="number" step="0.01" value={novoProduto.precoVenda} onChange={(e) => setNovoProduto({...novoProduto, precoVenda: e.target.value})} placeholder="R$ " required />
-                            <label>Descrição:</label>
+                            <label>Descrição</label>
                             <input type="text" value={novoProduto.descricao} onChange={(e) => setNovoProduto({...novoProduto, descricao: e.target.value})}  />
                         </form>
                         <button type="submit" className={styles.buttonAdd} onClick={handleSalvarProduto}>Salvar</button>
@@ -248,6 +276,9 @@ export default function Produtos(){
                                     </option>
                                 ))}
                             </select>
+
+                            <label>Quantidade</label>
+                            <input type="number" step="1" value={novoProduto.quantidade} onChange={(e) => setNovoProduto({...novoProduto, quantidade: e.target.value})} required />
                             
                             <label>Preço Compra:</label>
                             <input type="number" step="0.01" value={novoProduto.precoCompra} onChange={(e) => setNovoProduto({...novoProduto, precoCompra: e.target.value})} placeholder="R$ " required />

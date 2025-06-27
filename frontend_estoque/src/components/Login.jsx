@@ -5,11 +5,9 @@ import { useState } from 'react';
 export default function Login() {
   const navigate = useNavigate();
 
-  // Login states
   const [email, setEmail] = useState("");
   const [senhaHash, setSenhaHash] = useState("");
 
-  // Cadastro states
   const [nomeCadastro, setNomeCadastro] = useState("");
   const [emailCadastro, setEmailCadastro] = useState("");
   const [senhaCadastro, setSenhaCadastro] = useState("");
@@ -17,7 +15,6 @@ export default function Login() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  // Login
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -28,7 +25,7 @@ export default function Login() {
     });
 
     const data = await res.json();
-
+    console.log(data);
     if (res.ok) {
       localStorage.setItem("usuarioId", data.id);
       navigate("/Produtos");
@@ -37,7 +34,6 @@ export default function Login() {
     }
   };
 
-  // Cadastro
   const handleCadastro = async (e) => {
     e.preventDefault();
 
@@ -122,7 +118,6 @@ export default function Login() {
         </div>
       </div>
 
-      {/* MODAL DE CADASTRO */}
       {isModalOpen && (
         <div className={styles.modalOverlay}>
           <div className={styles.modalContent}>

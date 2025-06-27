@@ -1,6 +1,12 @@
 import styles from '../modules/LocaisArmazenamento.module.css'
 import { AiFillDelete } from "react-icons/ai";
 import { AiFillEdit } from "react-icons/ai";
+import { FaPersonArrowUpFromLine } from 'react-icons/fa6';
+import { FaPersonArrowDownToLine } from 'react-icons/fa6';
+import { TbArrowsExchange2 } from 'react-icons/tb';
+import { TbArrowsLeftRight } from 'react-icons/tb';
+import { TbArrowsRightLeft } from 'react-icons/tb';
+
 import { useContext, useState } from 'react'
 import { MovimentacaoEstoqueContext } from '../contexts/MovimentacaoEstoqueContext'
 import { LocalArmazenamentoContext } from '../contexts/LocalArmazenamentoContext'
@@ -19,33 +25,42 @@ export default function MovimentacoesEstoque(){
         quantidade: '',
         idProduto: '',
         idUsuario: '',
-        idPessoa: '',
+        idPessoa: null,
         idLocalArmazenamento: '',
+        idLocalArmazenamentoDestino: null,
 
     })
+
+    
     const {locaisArmazenamento} = useContext(LocalArmazenamentoContext)
     const {produtos} = useContext(ProdutoContext)
     const {pessoas} = useContext(PessoaContext)
     const {usuarios} = useContext(UsuarioContext)
 
-    const getNomeLocal = (idLocalArmazenamento) => {
+
+    const getLocal = (idLocalArmazenamento) => {
         const local = locaisArmazenamento.find(localArmazenamento =>localArmazenamento.id === idLocalArmazenamento)
-        return local ? local.nome : ''
+        return local ? local.nome : '---'
+
     }
+
+    const getTransferencia = (idLocalArmazenamentoDestino) => {
+        return locaisArmazenamento.find(local => local.idLocalArmazenamento === idLocalArmazenamentoDestino);
+    };
 
     const getNomeProduto = (idProduto) => {
         const produto = produtos.find(produto =>produto.id === idProduto)
-        return produto ? produto.nome : ''
+        return produto ? produto.nome : '---'
     }
 
     const getNomePessoa = (idPessoa) => {
         const pessoa = pessoas.find(pessoa => pessoa.id === idPessoa)
-        return pessoa ? pessoa.nome : ''
+        return pessoa ? pessoa.nome : '---'
     }
 
     const getNomeUsuario = (idUsuario) => {
         const usuario = usuarios.find(usuario => usuario.id === idUsuario)
-        return usuario ? usuario.nome : ''
+        return usuario ? usuario.nome : '---'
     }
 
     const tiposMovimentacao = [
@@ -64,7 +79,8 @@ export default function MovimentacoesEstoque(){
         const idProduto = String(movimentacao.idProduto || '');
         const idUsuario = String(movimentacao.idUsuario || '');
         const idPessoa = String(movimentacao.idPessoa || '');
-        const idLocalArmazenamento = String(movimentacao.idLocalArmazenamento || '')
+        const idLocalArmazenamento = String(movimentacao.idLocalArmazenamento || '');
+        const idLocalArmazenamentoDestino = String(movimentacao.idLocalArmazenamentoDestino || '')
 
 
         return (
@@ -74,9 +90,17 @@ export default function MovimentacoesEstoque(){
             idProduto.toLowerCase().includes(filtroLower) ||
             idUsuario.toLowerCase().includes(filtroLower) ||
             idPessoa.toLowerCase().includes(filtroLower) ||
-            idLocalArmazenamento.toLowerCase().includes(filtroLower)
+            idLocalArmazenamento.toLowerCase().includes(filtroLower) ||
+            idLocalArmazenamentoDestino.toLowerCase().includes(filtroLower)
         );
     }).sort((a, b) => a.tipoMovimentacao - b.tipoMovimentacao);
+
+
+    const ordenarTiposMovimentacao = (tipo) => {
+        const res = movimentacoesEstoqueFiltradas.filter(movimentacao => movimentacao.tipoMovimentacao === tipo);
+        return res.sort((a, b) => a.quantidade - b.quantidade);
+    }
+
 
     const openAddMovimentacaoEstoque = ( ) => {
         setNovaMovimentacaoEstoque({
@@ -85,8 +109,9 @@ export default function MovimentacoesEstoque(){
             quantidade: '',
             idProduto: '',
             idUsuario: '',
-            idPessoa: '',
+            idPessoa: null,
             idLocalArmazenamento: '',
+            idLocalArmazenamentoDestino: null,
         });
         setIsAddMovimentacaoEstoqueOpen(true)
     }
@@ -103,6 +128,7 @@ export default function MovimentacoesEstoque(){
             idUsuario: movimentacaoEstoque.idUsuario,
             idPessoa: movimentacaoEstoque.idPessoa,
             idLocalArmazenamento: movimentacaoEstoque.idLocalArmazenamento,
+            idLocalArmazenamentoDestino: movimentacaoEstoque.idLocalArmazenamentoDestino
         });
         setIsEditMovimentacaoEstoqueOpen(true)
     }
@@ -111,16 +137,35 @@ export default function MovimentacoesEstoque(){
     }
 
     function handleSalvarMovimentacaoEstoque( ){
-        console.log(novaMovimentacaoEstoque)
-        if (novaMovimentacaoEstoque.tipoMovimentacao === '' || novaMovimentacaoEstoque.quantidade === '' || novaMovimentacaoEstoque.idProduto === '' || novaMovimentacaoEstoque.idUsuario === '' || novaMovimentacaoEstoque.idPessoa === '' || novaMovimentacaoEstoque.idLocalArmazenamento === '') {
+        
+        if (novaMovimentacaoEstoque.tipoMovimentacao === '' || novaMovimentacaoEstoque.quantidade === '' ||
+            novaMovimentacaoEstoque.idProduto === '' ||novaMovimentacaoEstoque.idUsuario === '' || novaMovimentacaoEstoque.idLocalArmazenamento === '' ||
+            (novaMovimentacaoEstoque.tipoMovimentacao === 'TRANSFERENCIA' && novaMovimentacaoEstoque.idLocalArmazenamentoDestino === '')) {
             alert('Preencha todos os campos!')
+            return
+        }
+
+        if (novaMovimentacaoEstoque.idLocalArmazenamento === novaMovimentacaoEstoque.idLocalArmazenamentoDestino){
+            alert('O local de armazenamento de destino deve ser diferente do local de armazenamento de origem!')
+            return
+        }
+
+        if (parseInt(novaMovimentacaoEstoque.quantidade) <=0){
+            alert('A quantidade deve ser maior que 0!')
+            return
+        }
+
+        if (novaMovimentacaoEstoque.quantidade > parseInt(novaMovimentacaoEstoque.idProduto.quantidade)){
+            alert('A quantidade não pode ser maior que o estoque do produto!')
             return
         }
 
         const dadosMovimentacaoEstoque = {
             ...novaMovimentacaoEstoque,
             quantidade: parseInt(novaMovimentacaoEstoque.quantidade),
+
         };
+        console.log(dadosMovimentacaoEstoque)
         adicionarMovimentacaoEstoque(dadosMovimentacaoEstoque); 
         setNovaMovimentacaoEstoque({
             id: null,
@@ -128,8 +173,9 @@ export default function MovimentacoesEstoque(){
             quantidade: '',
             idProduto: '',
             idUsuario: '',
-            idPessoa: '',
+            idPessoa: null,
             idLocalArmazenamento: '',
+            idLocalArmazenamentoDestino: ''
         })
         closeAddMovimentacaoEstoque(); 
     }
@@ -161,7 +207,7 @@ export default function MovimentacoesEstoque(){
             quantidade: '',
             idProduto: '',
             idUsuario: '',
-            idPessoa: '',
+            idPessoa: null,
             idLocalArmazenamento: '',
         })
         closeEditMovimentacaoEstoque()
@@ -198,21 +244,52 @@ export default function MovimentacoesEstoque(){
                             <th>Produto</th>
                             <th>Usuário</th>
                             <th>Pessoa</th>
-                            <th>Tipo</th>
+                            <th>E / S</th>
                             <th>Quantidade</th>
                             <th>Local</th>
+                            <th>TRANSFERENCIA </th>
+                           
                         </tr>
                     </thead>
                     <tbody>
                         {movimentacoesEstoqueFiltradas.length > 0 ? (
                             movimentacoesEstoqueFiltradas.map((movimentacaoEstoque) => (
-                            <tr key={movimentacaoEstoque.id || movimentacaoEstoque.tipoMovimentacao}>
+                            <tr key={movimentacaoEstoque.id}>
                                 <td>{getNomeProduto(movimentacaoEstoque.idProduto)}</td>
                                 <td>{getNomeUsuario(movimentacaoEstoque.idUsuario)}</td>
                                 <td>{getNomePessoa(movimentacaoEstoque.idPessoa)}</td>
-                                <td>{movimentacaoEstoque.tipoMovimentacao}</td>
+                                <td style={{
+                                        color:
+                                        movimentacaoEstoque.tipoMovimentacao === 'ENTRADA'
+                                            ? 'green'
+                                            : movimentacaoEstoque.tipoMovimentacao === 'SAIDA'
+                                            ? 'red'
+                                            : 'gray',
+                                        opacity: 0.8, 
+                                        fontWeight: 'bold'
+                                    }}
+                                    >
+                                {movimentacaoEstoque.tipoMovimentacao}
+                                </td>
                                 <td>{movimentacaoEstoque.quantidade}</td>
-                                <td>{getNomeLocal(movimentacaoEstoque.idLocalArmazenamento)}</td>
+                                <td>{getLocal(movimentacaoEstoque.idLocalArmazenamento)}</td>
+                                <td>
+                                    {movimentacaoEstoque.idLocalArmazenamentoDestino !== "" && (
+                                    <>
+                                        {movimentacaoEstoque.tipoMovimentacao === 'ENTRADA' && (
+                                            <TbArrowsExchange2 style={{ color: 'green', width: 30, height: 'auto' }} />
+                                        )}
+
+                                        {movimentacaoEstoque.tipoMovimentacao === 'SAIDA' && (
+                                            <TbArrowsExchange2 style={{ color: 'red', width: 30, height: 'auto' }} />
+                                        )}
+                                        {movimentacaoEstoque.tipoMovimentacao === 'TRANSFERENCIA' && (
+                                            <TbArrowsRightLeft style={{ color: 'gray', width: 30, height: 'auto' }} />
+                                        )}
+                                    </>
+                                    )}
+                                </td>
+
                                 <td>
                                     <button onClick={() => openEditMovimentacaoEstoque(movimentacaoEstoque)}><AiFillEdit/></button>
                                     <button onClick={() => handleDeleteMovimentacaoEstoque(movimentacaoEstoque)}><AiFillDelete/></button>
@@ -253,18 +330,7 @@ export default function MovimentacoesEstoque(){
                                     </option> 
                                 ))}
                             </select>
-                           
 
-                            <label>Pessoa:</label>
-                            <select id="idPessoa" value={novaMovimentacaoEstoque.idPessoa} onChange={(e) => setNovaMovimentacaoEstoque({...novaMovimentacaoEstoque, idPessoa: e.target.value})} required>
-                                <option value="">Selecione um usuário</option>
-                                {pessoas.map((pessoa) => (
-                                    <option key={pessoa.id} value={pessoa.id}>
-                                        {pessoa.nome}  |  {pessoa.tipoPessoa}
-                                    </option> 
-                                ))}
-                            </select>
-                                
                             <label>Tipo:</label>
                             <select id="tipoMovimentacao" value={novaMovimentacaoEstoque.tipoMovimentacao} onChange={(e) => setNovaMovimentacaoEstoque({...novaMovimentacaoEstoque, tipoMovimentacao: e.target.value})} required>
                                 <option value="">Selecione um local</option>
@@ -274,11 +340,27 @@ export default function MovimentacoesEstoque(){
                                     </option> 
                                 ))}
                             </select> 
+                           
+                            { novaMovimentacaoEstoque.tipoMovimentacao !== 'TRANSFERENCIA' && (
+                                <>
+                                    <label>Pessoa:</label>
+                                    <select id="idPessoa" value={novaMovimentacaoEstoque.idPessoa} onChange={(e) => setNovaMovimentacaoEstoque({...novaMovimentacaoEstoque, idPessoa: e.target.value})} required>
+                                        <option value="">Selecione um usuário</option>
+                                        {pessoas.map((pessoa) => (
+                                            <option key={pessoa.id} value={pessoa.id}>
+                                                {pessoa.nome}  |  {pessoa.tipoPessoa}
+                                            </option> 
+                                        ))}
+                                    </select> 
+                                </>
+                            )}
                             
+
                             <label>Quantidade:</label>
                             <input type="number" id="quantidade" value={novaMovimentacaoEstoque.quantidade} onChange={(e) => setNovaMovimentacaoEstoque({...novaMovimentacaoEstoque, quantidade: e.target.value})} required />
-                            
-                            <label>Local Armazenamento:</label>
+                                
+
+                            <label>Local Armazenamento origem:</label>
                             <select id="idLocalArmazenamento" value={novaMovimentacaoEstoque.idLocalArmazenamento} onChange={(e) => setNovaMovimentacaoEstoque({...novaMovimentacaoEstoque, idLocalArmazenamento: e.target.value})} required>
                                 <option value="">Selecione um local</option>
                                 {locaisArmazenamento.map((local) => (
@@ -287,6 +369,19 @@ export default function MovimentacoesEstoque(){
                                     </option> 
                                 ))}
                             </select> 
+                            {novaMovimentacaoEstoque.tipoMovimentacao === 'TRANSFERENCIA' && (
+                            <div>
+                                <label>Local Armazenamento destino:</label>
+                                <select id="idLocalArmazenamentoDestino" value={novaMovimentacaoEstoque.idLocalArmazenamentoDestino} onChange={(e) => setNovaMovimentacaoEstoque({...novaMovimentacaoEstoque, idLocalArmazenamentoDestino: e.target.value})} required>
+                                <option value="">Selecione um local</option>
+                                    {locaisArmazenamento.map((local) => (
+                                    <option key={local.id} value={local.id}>
+                                        {local.nome}  |  {local.endereco}
+                                    </option> 
+                                    ))}
+                                </select>
+                            </div>
+                            )}
                         
                         </form>
                         <button type="submit" onClick={handleSalvarMovimentacaoEstoque}>Salvar</button>
@@ -345,7 +440,7 @@ export default function MovimentacoesEstoque(){
                             <label>Quantidade:</label>
                             <input type="number" id="quantidade" value={novaMovimentacaoEstoque.quantidade} onChange={(e) => setNovaMovimentacaoEstoque({...novaMovimentacaoEstoque, quantidade: e.target.value})} required />
                             
-                            <label>ID Local Armazenamento:</label>
+                            <label>Local Armazenamento origem:</label>
                             <select id="idLocalArmazenamento" value={novaMovimentacaoEstoque.idLocalArmazenamento} onChange={(e) => setNovaMovimentacaoEstoque({...novaMovimentacaoEstoque, idLocalArmazenamento: e.target.value})} required>
                                 <option value="">Selecione um local</option>
                                 {locaisArmazenamento.map((local) => (
@@ -354,6 +449,20 @@ export default function MovimentacoesEstoque(){
                                     </option> 
                                 ))}
                             </select> 
+
+                            {novaMovimentacaoEstoque.tipoMovimentacao === 'TRANSFERENCIA' && (
+                            <div>
+                                <label>Local Armazenamento destino:</label>
+                                <select id="idLocalArmazenamentoDestino" value={novaMovimentacaoEstoque.idLocalArmazenamentoDestino} onChange={(e) => setNovaMovimentacaoEstoque({...novaMovimentacaoEstoque, idLocalArmazenamentoDestino: e.target.value})} required>
+                                <option value="">Selecione um local</option>
+                                    {locaisArmazenamento.map((local) => (
+                                    <option key={local.id} value={local.id}>
+                                        {local.nome}  |  {local.endereco}
+                                    </option> 
+                                    ))}
+                                </select>
+                            </div>
+                            )}
                         
                         </form>
                         <button type="submit" onClick={handleEditarMovimentacaoEstoque}>Salvar</button>

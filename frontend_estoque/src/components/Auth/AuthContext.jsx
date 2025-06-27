@@ -17,9 +17,11 @@ export const AuthProvider = ({ children }) => {
 
       const data = await response.json();
       if (response.ok) {
-        localStorage.setItem("usuarioId", data.id);
         const resUser = await fetch(`http://localhost:3333/users/${data.id}`);
         const userData = await resUser.json();
+        localStorage.setItem("usuarioId", data.id);
+        localStorage.setItem("usuarioTipo", userData.tipoUsuario);
+        localStorage.setItem("usuarioNome", userData.nome);
         setUser(userData);
         if(userData.tipoUsuario === 'ADMIN'){
           navigate("/Dashboard");
@@ -50,6 +52,12 @@ export const AuthProvider = ({ children }) => {
         if (res.ok) {
           const data = await res.json();
           setUser(data);
+          if(data.tipoUsuario === 'ADMIN'){
+            navigate("/Dashboard");
+          }else{
+            navigate("/Produtos");
+          }
+          
         }
       }
     };
